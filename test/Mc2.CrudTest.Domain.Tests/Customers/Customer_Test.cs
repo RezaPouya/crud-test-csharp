@@ -9,6 +9,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
 {
     public class Customer_Test
     {
+        private Customer _customer = new Customer();
         [Fact]
         public void WeShouldHaveCustomer()
         {
