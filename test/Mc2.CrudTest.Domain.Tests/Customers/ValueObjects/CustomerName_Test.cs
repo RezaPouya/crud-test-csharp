@@ -18,10 +18,10 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
         }
 
         [Fact]
-        public void Should_have_fname_and_lname()
+        public void Should_have_fname_and_lname_property()
         {
-            Assert.NotNull(_customer.Name.FirstName);
-            Assert.NotNull(_customer.Name.LastName);
+            Assert.Null(_customer.Name.FirstName);
+            Assert.Null(_customer.Name.LastName);
         }
     }
 }
