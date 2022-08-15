@@ -16,5 +16,11 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         {
             Assert.NotNull(_customer);
         }
+
+        [Fact]
+        public void CustomerShouldHaveName()
+        {
+            Assert.NotNull(_customer.Name);
+        }
     }
 }
