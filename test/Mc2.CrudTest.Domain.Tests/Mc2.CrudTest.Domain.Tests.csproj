@@ -24,4 +24,8 @@
     <Folder Include="Customers\ValueObjects\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mc2.CrudTest.Domain\Mc2.CrudTest.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

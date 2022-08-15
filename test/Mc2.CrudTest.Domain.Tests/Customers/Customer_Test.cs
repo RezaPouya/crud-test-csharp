@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mc2.CrudTest.Domain.Customers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
