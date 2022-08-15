@@ -1,18 +1,16 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
-using Mc2.CrudTest.Domain.Customers.ValueObjects;
+using Mc2.CrudTest.Domain.Tests.MoqObjects;
 using Xunit;
 
 namespace Mc2.CrudTest.Domain.Tests.Customers
 {
     public class Customer_Test
     {
-        private CustomerName _name;
         private Customer _customer;
 
         public Customer_Test()
         {
-            _name = new CustomerName();
-            _customer = new Customer(_name);
+            _customer = CustomerMoq.GetDefaultCustomer();
         }
 
         [Fact]
