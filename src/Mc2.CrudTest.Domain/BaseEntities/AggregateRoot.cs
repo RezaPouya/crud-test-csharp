@@ -7,39 +7,22 @@ namespace Mc2.CrudTest.Domain.BaseEntities
         protected AggregateRoot()
         { }
 
-        private readonly ICollection<DomainEvent> _distributedEvents = new Collection<DomainEvent>();
-        private readonly ICollection<DomainEvent> _localEvents = new Collection<DomainEvent>();
+        private readonly ICollection<DomainEvent> _events = new Collection<DomainEvent>();
 
-        public virtual IEnumerable<DomainEvent> GetLocalEvents()
+        public virtual IEnumerable<DomainEvent> GetEvents()
         {
-            return _localEvents;
+            return _events;
         }
 
-        public virtual IEnumerable<DomainEvent> GetDistributedEvents()
+        public virtual void ClearEvents()
         {
-            return _distributedEvents;
+            _events.Clear();
         }
 
-        public virtual void ClearLocalEvents()
+        protected virtual void AddEvent(object eventData)
         {
-            _localEvents.Clear();
-        }
-
-        public virtual void ClearDistributedEvents()
-        {
-            _distributedEvents.Clear();
-        }
-
-        protected virtual void AddLocalEvent(object eventData)
-        {
-            var lastEvent = _localEvents.OrderBy(p => p.EventOrder).LastOrDefault()?.EventOrder ?? 0;
-            _localEvents.Add(new DomainEvent(eventData, lastEvent + 1));
-        }
-
-        protected virtual void AddDistributedEvent(object eventData)
-        {
-            var lastEvent = _distributedEvents.OrderBy(p => p.EventOrder).LastOrDefault()?.EventOrder ?? 0;
-            _distributedEvents.Add(new DomainEvent(eventData, lastEvent + 1));
+            var lastEvent = _events.OrderBy(p => p.EventOrder).LastOrDefault()?.EventOrder ?? 0;
+            _events.Add(new DomainEvent(eventData, lastEvent + 1));
         }
     }
 }
