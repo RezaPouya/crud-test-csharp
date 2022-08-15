@@ -10,7 +10,7 @@ namespace Mc2.CrudTest.Domain.Tests.MoqObjects
 
         public static Customer GetDefaultCustomer()
         {
-            _name = new CustomerName();
+            _name = new CustomerName("Reza","Pouya");
             _customer = new Customer(_name);
 
             return _customer;
