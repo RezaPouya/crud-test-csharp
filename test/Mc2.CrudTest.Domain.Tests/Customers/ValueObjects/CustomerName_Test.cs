@@ -1,4 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
+using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.Tests.MoqObjects;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,13 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
         {
             Assert.Null(_customer.Name.FirstName);
             Assert.Null(_customer.Name.LastName);
+        }
+
+        [Fact]
+        public void Should_throw_Exception_if_customer_fname_is_empty()
+        {
+            Action act = () => new CustomerName("", "Pouya");
+            Assert.Throws<CustomerException>(act);
         }
     }
 }
