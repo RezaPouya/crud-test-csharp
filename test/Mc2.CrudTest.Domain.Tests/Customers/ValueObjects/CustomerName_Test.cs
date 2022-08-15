@@ -45,20 +45,20 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
             Assert.Contains("The customer first name Length should be less than 65 characters.", ex.Message);
         }
 
-        //[Fact]
-        //public void Should_throw_exception_if_lname_length_is_less_than_3_characters()
-        //{
-        //    Action act = () => new CustomerName("Reza", "P");
-        //    var ex = Assert.Throws<CustomerException>(act);
-        //    Assert.Contains("The customer last name should have more than 2 characters.", ex.Message);
-        //}
+        [Fact]
+        public void Should_throw_exception_if_lname_length_is_less_than_3_characters()
+        {
+            Action act = () => new CustomerName("Reza", "P");
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("The customer last name should have more than 2 characters.", ex.Message);
+        }
 
-        //[Fact]
-        //public void Should_throw_exception_if_lname_length_is_greater_than_64_characters()
-        //{
-        //    Action act = () => new CustomerName("Reza", "qwerqwerqwersdfasdflksjdflasjdflaskjdfl;asdjf;alsdfj;asldfjasldkfja;sdf");
-        //    var ex = Assert.Throws<CustomerException>(act);
-        //    Assert.Contains("The customer last name Length should be less than 65 characters.", ex.Message);
-        //}
+        [Fact]
+        public void Should_throw_exception_if_lname_length_is_greater_than_64_characters()
+        {
+            Action act = () => new CustomerName("Reza", "qwerqwerqwersdfasdflksjdflasjdflaskjdfl;asdjf;alsdfj;asldfjasldkfja;sdf");
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("The customer last name Length should be less than 65 characters.", ex.Message);
+        }
     }
 }

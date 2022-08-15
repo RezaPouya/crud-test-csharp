@@ -6,18 +6,27 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
     {
         public CustomerName(string firstName, string lastName)
         {
-            if (string.IsNullOrEmpty(firstName))
-                throw new CustomerException("The first name cannot be null or empty");
-
-            if (firstName.Length <= 2)
-                throw new CustomerException($"The customer first name should have more than 2 characters.");
-
-            if (firstName.Length > 64)
-                throw new CustomerException($"The customer first name Length should be less than 65 characters.");
+            Validate(firstName , isFirstName:true);
+            Validate(lastName , isFirstName:false);
 
             FirstName = firstName;
             LastName = lastName;
         }
+
+        private static void Validate(string inputName, bool isFirstName )
+        {
+            string name = isFirstName ? "first name" : "last name";
+
+            if (string.IsNullOrEmpty(inputName))
+                throw new CustomerException($"The {name} cannot be null or empty");
+
+            if (inputName.Length <= 2)
+                throw new CustomerException($"The customer {name} should have more than 2 characters.");
+
+            if (inputName.Length > 64)
+                throw new CustomerException($"The customer {name} Length should be less than 65 characters.");
+        }
+
 
         public string FirstName { get; protected set; }
         public string LastName { get; protected set; }
