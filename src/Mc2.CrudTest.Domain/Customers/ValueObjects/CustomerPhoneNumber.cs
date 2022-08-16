@@ -15,7 +15,7 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
             Number = number.Trim();
         }
 
-        public string Number { get; set; }
+        public string Number { get; protected set; }
 
         public void Validate(string number)
         {
