@@ -37,9 +37,18 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(string email, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(string email, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException(nameof(email));
+
+            Customer customer = await GetCustomerAsync(email, cancellationToken);
+
+            if (customer is null)
+                throw new CustomerException("There is no customer with this email.");
+
+            _dbContext.Remove(customer);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
@@ -50,7 +59,7 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             if (await IsPersonalInfoUniqueAsync(inputDto, cancellationToken))
                 throw new CustomerException("There is a customer with same personal info.");
 
-            Customer customer = await GetCustomerAsync(inputDto.Email);
+            Customer customer = await GetCustomerAsync(inputDto.Email, cancellationToken);
 
             if (customer is null)
                 throw new CustomerException("There is no customer with this email.");

@@ -13,6 +13,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
     {
         private ICustomerManager _manager;
         private ApplicationDbContext _dbContext;
+
         public CustomerManager_Test(ApplicationDbContextSeedDataFixture fixture)
         {
             _dbContext = fixture._applicationDbContext;
@@ -119,7 +120,6 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             Assert.Contains("There is a customer with same personal info.", ex.Message);
         }
 
-
         [Fact]
         public void we_should_be_able_to_update_customer()
         {
@@ -151,9 +151,43 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             var customer = _dbContext.Customers.FirstOrDefault(p => p.Email.Equals(createInput.Email));
             // assert
             Assert.NotNull(customer);
-            Assert.Equal(updateInput.FirstName , customer.PersonalInfo.FirstName);
-            Assert.Equal(updateInput.LastName , customer.PersonalInfo.LastName);
-            Assert.Equal(updateInput.DateOfBirth.Date , customer.PersonalInfo.DateOfBirth.Date);
+            Assert.Equal(updateInput.FirstName, customer.PersonalInfo.FirstName);
+            Assert.Equal(updateInput.LastName, customer.PersonalInfo.LastName);
+            Assert.Equal(updateInput.DateOfBirth.Date, customer.PersonalInfo.DateOfBirth.Date);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_customer_not_found_in_delete()
+        {
+            Action act = () => _manager.DeleteAsync("a@delete3242341.com").GetAwaiter().GetResult();
+
+            // assert
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("There is no customer with this email.", ex.Message);
+        }
+
+        [Fact]
+        public void should_be_able_to_delete_customer()
+        {
+            // arrange
+            var createInput = new CustomerInputDto()
+            {
+                Email = "a@delete2.com",
+                BankAccountNumber = "IR0000001",
+                FirstName = "Mr.Zdelete2",
+                LastName = "Developer",
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                PhoneNumber = "+989383810430"
+            };
+
+            // act
+            _manager.CreateAsync(createInput).GetAwaiter().GetResult();
+            _manager.DeleteAsync(createInput.Email).GetAwaiter().GetResult();
+
+            var customer = _dbContext.Customers.FirstOrDefault(p => p.Email.Equals(createInput.Email));
+
+            // assert
+            Assert.Null(customer);
         }
     }
 }
