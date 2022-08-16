@@ -94,7 +94,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             {
                 Email = "a@update.com",
                 BankAccountNumber = "IR0000001",
-                FirstName = "Mr.Z",
+                FirstName = "Mr.Z111",
                 LastName = "Developer",
                 DateOfBirth = DateTime.Now.AddYears(-20),
                 PhoneNumber = "+989383810430"
@@ -104,7 +104,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             {
                 Email = "a@b.com",
                 BankAccountNumber = "IR0000001",
-                FirstName = "Mr.Z",
+                FirstName = "Mr.Z111",
                 LastName = "Developer",
                 DateOfBirth = DateTime.Now.AddYears(-20),
                 PhoneNumber = "+989383810430"
@@ -117,6 +117,43 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             // assert
             var ex = Assert.Throws<CustomerException>(act);
             Assert.Contains("There is a customer with same personal info.", ex.Message);
+        }
+
+
+        [Fact]
+        public void we_should_be_able_to_update_customer()
+        {
+            // arrange
+            var createInput = new CustomerInputDto()
+            {
+                Email = "a@update2.com",
+                BankAccountNumber = "IR0000001",
+                FirstName = "Mr.Z",
+                LastName = "Developer",
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                PhoneNumber = "+989383810430"
+            };
+
+            var updateInput = new CustomerInputDto()
+            {
+                Email = createInput.Email,
+                BankAccountNumber = "IR0000001",
+                FirstName = "Mr.Update2",
+                LastName = "Developer2",
+                DateOfBirth = DateTime.Now.AddYears(-22),
+                PhoneNumber = "+989383810430"
+            };
+
+            // act
+            _manager.CreateAsync(createInput).GetAwaiter().GetResult();
+            _manager.UpdateAsync(updateInput).GetAwaiter().GetResult();
+
+            var customer = _dbContext.Customers.FirstOrDefault(p => p.Email.Equals(createInput.Email));
+            // assert
+            Assert.NotNull(customer);
+            Assert.Equal(updateInput.FirstName , customer.PersonalInfo.FirstName);
+            Assert.Equal(updateInput.LastName , customer.PersonalInfo.LastName);
+            Assert.Equal(updateInput.DateOfBirth.Date , customer.PersonalInfo.DateOfBirth.Date);
         }
     }
 }
