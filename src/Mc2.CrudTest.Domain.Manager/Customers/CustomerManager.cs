@@ -47,20 +47,27 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             if (inputDto == null)
                 throw new ArgumentNullException(nameof(inputDto));
 
-            if (await IsPersonalInfoUniqueAsync(inputDto , cancellationToken))
+            if (await IsPersonalInfoUniqueAsync(inputDto, cancellationToken))
                 throw new CustomerException("There is a customer with same personal info.");
-        }
 
-        
+            Customer customer = await GetCustomerAsync(inputDto.Email);
+
+            if (customer is null)
+                throw new CustomerException("There is no customer with this email.");
+
+            customer.Update(inputDto.FirstName, inputDto.LastName, inputDto.DateOfBirth, inputDto.BankAccountNumber, inputDto.PhoneNumber);
+            _dbContext.Update(customer);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
 
         private CustomerPersonalInfo CreateCustomerPersonalInfo(CustomerInputDto inputDto)
         {
             return new CustomerPersonalInfo(inputDto.FirstName.Trim(), inputDto.LastName.Trim(), inputDto.DateOfBirth);
         }
 
-        #region queries 
+        #region queries
 
-        private async Task<bool> IsPersonalInfoUniqueAsync( CustomerInputDto inputDto ,  CancellationToken cancellationToken = default)
+        private async Task<bool> IsPersonalInfoUniqueAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Customers.AsNoTracking()
                 .Where(p => !p.Email.Equals(inputDto.Email.Trim()))
@@ -75,8 +82,11 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             return await _dbContext.Customers.AsNoTracking().AnyAsync(p => p.Email.Equals(email.Trim()), cancellationToken);
         }
 
+        private async Task<Customer> GetCustomerAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Customers.FirstOrDefaultAsync(p => p.Email.Equals(email.Trim()), cancellationToken);
+        }
 
-
-        #endregion
+        #endregion queries
     }
 }
