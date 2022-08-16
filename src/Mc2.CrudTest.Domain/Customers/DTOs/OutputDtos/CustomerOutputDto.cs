@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mc2.CrudTest.Domain.DTOs.OutputDtos
+namespace Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos
 {
     [Serializable]
     public class CustomerOutputDto

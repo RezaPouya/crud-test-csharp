@@ -1,5 +1,4 @@
-﻿using Mc2.CrudTest.Domain.Customers;
-using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
+﻿using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
 using Xunit;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests
@@ -12,7 +11,5 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
         {
             _fixture = fixture;
         }
-
-        private readonly ICustomerRepository _customerRepository;
     }
 }
