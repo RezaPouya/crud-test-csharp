@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mc2.CrudTest.Domain.Customers;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Mc2.CrudTest.Domain.DataAccess
@@ -14,5 +15,7 @@ namespace Mc2.CrudTest.Domain.DataAccess
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Customer> Customers { get; set; }
     }
 }
