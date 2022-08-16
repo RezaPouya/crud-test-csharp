@@ -3,7 +3,7 @@ using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.DataAccess;
 using System;
 
-namespace Mc2.CrudTest.Domain.Tests.DataFixtures
+namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
 {
     internal class ApplicationDbContextSeedDataFixture : IDisposable
     {

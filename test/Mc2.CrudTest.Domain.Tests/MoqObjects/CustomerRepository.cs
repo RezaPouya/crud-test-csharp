@@ -1,5 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
-using Mc2.CrudTest.Domain.Tests.DataFixtures;
+using Mc2.CrudTest.Domain.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading;
@@ -8,30 +8,30 @@ using Xunit;
 
 namespace Mc2.CrudTest.Domain.Tests.MoqObjects
 {
-    internal class CustomerMoqRepository : ICustomerRepository, IClassFixture<ApplicationDbContextSeedDataFixture>
+    internal class CustomerMoqRepository : ICustomerRepository
     {
-        private ApplicationDbContextSeedDataFixture _fixture;
+        private ApplicationDbContext _dbContext;
 
-        public CustomerMoqRepository(ApplicationDbContextSeedDataFixture fixture)
+        public CustomerMoqRepository(ApplicationDbContext dbContext)
         {
-            this._fixture = fixture;
+            this._dbContext = dbContext;
         }
 
         public async Task CreateAsync(Customer customer, CancellationToken cancellationToken = default)
         {
-            _fixture._applicationDbContext.Add(customer);
-            _fixture._applicationDbContext.SaveChanges();
+            _dbContext.Add(customer);
+            _dbContext.SaveChanges();
         }
 
         public async Task DeleteAsync(Customer customer, CancellationToken cancellationToken = default)
         {
-            _fixture._applicationDbContext.Remove(customer);
-            _fixture._applicationDbContext.SaveChanges();
+            _dbContext.Remove(customer);
+            _dbContext.SaveChanges();
         }
 
         public async Task<List<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _fixture._applicationDbContext.Customers.ToListAsync(cancellationToken);
+            return await _dbContext.Customers.ToListAsync(cancellationToken);
         }
 
         public async Task<Customer> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
@@ -39,13 +39,14 @@ namespace Mc2.CrudTest.Domain.Tests.MoqObjects
             if (string.IsNullOrEmpty(email))
                 return null;
 
-            return await _fixture._applicationDbContext.Customers.FirstOrDefaultAsync(c => c.Email.Equals(email.Trim()), cancellationToken);
+            return await _dbContext.Customers
+                .FirstOrDefaultAsync(c => c.Email.Equals(email.Trim()), cancellationToken);
         }
 
         public async Task UpdateAsync(Customer customer, CancellationToken cancellationToken = default)
         {
-            _fixture._applicationDbContext.Update(customer);
-            _fixture._applicationDbContext.SaveChanges();
+            _dbContext.Update(customer);
+            _dbContext.SaveChanges();
         }
     }
 }
