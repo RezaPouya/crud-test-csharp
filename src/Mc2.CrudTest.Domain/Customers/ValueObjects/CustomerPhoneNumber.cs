@@ -1,9 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.BaseEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mc2.CrudTest.Utility.Helpers;
 
 namespace Mc2.CrudTest.Domain.Customers.ValueObjects
 {
@@ -12,16 +8,16 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
         protected CustomerPhoneNumber()
         {
         }
+
         public CustomerPhoneNumber(string number)
         {
             Validate(number);
             Number = number.Trim();
         }
 
-
         public string Number { get; set; }
 
-        public void  Validate(string number)
+        public void Validate(string number)
         {
             var trimedNumber = number.Trim();
             if (string.IsNullOrEmpty(trimedNumber))
@@ -29,6 +25,9 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
 
             if (trimedNumber.Length > 31)
                 throw new CustomerException("The customer phone number is not valid.");
+
+            if (PhoneNumberHelper.IsValidCellphoneNumber(trimedNumber) == false)
+                throw new CustomerException("Only cellphone number is acceptable.");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

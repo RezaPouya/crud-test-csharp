@@ -43,9 +43,9 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
         public void Should_throw_exception_if_entered_phone_number_is_not_cellphone_type()
         {
             // https://www.interfax.net/en/help/faxnumber_format
-            Action act = () => new CustomerPhoneNumber("+44-208-1234567");
+            Action act = () => new CustomerPhoneNumber("+44 1-2222 8888");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("Only cellphone number is acceptable", ex.Message);
+            Assert.Contains("Only cellphone number is acceptable.", ex.Message);
         }
     }
 }
