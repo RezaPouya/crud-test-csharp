@@ -42,12 +42,12 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
         }
 
         [Fact]
-        public void should_create_customre()
+        public void should_create_customer()
         {
             // arrange
             var inputDto = new CustomerInputDto()
             {
-                Email = "a@sample.com",
+                Email = "a@create.com",
                 BankAccountNumber = "IR0000001",
                 FirstName = "Mr.Z",
                 LastName = "Developer",
@@ -62,6 +62,39 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
 
             // assert
             Assert.NotNull(customer);
+        }
+
+        [Fact]
+        public void should_throw_exception_if_fname_lname_dateOfBirth_combination_is_not_unique_in_update()
+        {
+            // arrange
+            var createInput = new CustomerInputDto()
+            {
+                Email = "a@update.com",
+                BankAccountNumber = "IR0000001",
+                FirstName = "Mr.Z",
+                LastName = "Developer",
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                PhoneNumber = "+989383810430"
+            };
+
+            var updateInput = new CustomerInputDto()
+            {
+                Email = "a@b.com",
+                BankAccountNumber = "IR0000001",
+                FirstName = "Mr.Z",
+                LastName = "Developer",
+                DateOfBirth = DateTime.Now.AddYears(-20),
+                PhoneNumber = "+989383810430"
+            };
+
+            // act
+            _manager.CreateAsync(createInput).GetAwaiter().GetResult();
+            Action act = () => _manager.UpdateAsync(updateInput).GetAwaiter().GetResult();
+
+            // assert
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("There is a customer with same personal info.", ex.Message);
         }
     }
 }
