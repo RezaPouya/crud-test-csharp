@@ -18,7 +18,9 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
                 .HasColumnType("varchar(254)")
                 .ValueGeneratedNever();
 
-            builder.Property(p => p.BankAccountNumber).IsRequired();
+            builder.Property(p => p.BankAccountNumber)
+                .HasMaxLength(34)
+                .HasColumnType("varchar(34)").IsRequired();
 
             // Customers must be unique in database: By Firstname, Lastname and DateOfBirth.
 
