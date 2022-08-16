@@ -46,6 +46,13 @@ namespace Mc2.CrudTest.Domain.Customers
             this.Email = email;
         }
 
+        public void Update(string fname, string lname, DateTime dateOfBirth, string bankAcountNumber, string phoneNumber)
+        {
+            SetBankAccountNumber(bankAcountNumber);
+            PersonalInfo = new CustomerPersonalInfo(fname, lname, dateOfBirth);
+            PhoneNumber = new CustomerPhoneNumber(phoneNumber);
+        }
+
         private void SetBankAccountNumber(string bankAccountNumber)
         {
             bankAccountNumber = bankAccountNumber?.Trim() ?? string.Empty;
