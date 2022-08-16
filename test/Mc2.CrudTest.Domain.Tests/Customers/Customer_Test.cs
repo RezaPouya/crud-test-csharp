@@ -90,5 +90,14 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
             Assert.Contains("The bank account number is too long and not valid.", ex.Message);
         }
 
+
+        [Fact]
+        public void should_be_able_to_update_customer_info()
+        {
+            Action act = () => _customer.Update();
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("The bank account number is too long and not valid.", ex.Message);
+        }
+
     }
 }
