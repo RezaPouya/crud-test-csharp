@@ -23,6 +23,9 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             if (await IsEmailExistAsync(inputDto.Email))
                 throw new CustomerException("There is a customer with same email.");
 
+            if (await IsPersonalInfoUniqueAsync(inputDto, cancellationToken))
+                throw new CustomerException("There is a customer with same personal info.");
+
             var customerPhoneNumber = new CustomerPhoneNumber(inputDto.PhoneNumber.Trim());
 
             Customer customer = new Customer(inputDto.Email.Trim(),
@@ -39,9 +42,32 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (inputDto == null)
+                throw new ArgumentNullException(nameof(inputDto));
+
+            if (await IsPersonalInfoUniqueAsync(inputDto , cancellationToken))
+                throw new CustomerException("There is a customer with same personal info.");
+        }
+
+        
+
+        private CustomerPersonalInfo CreateCustomerPersonalInfo(CustomerInputDto inputDto)
+        {
+            return new CustomerPersonalInfo(inputDto.FirstName.Trim(), inputDto.LastName.Trim(), inputDto.DateOfBirth);
+        }
+
+        #region queries 
+
+        private async Task<bool> IsPersonalInfoUniqueAsync( CustomerInputDto inputDto ,  CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Customers.AsNoTracking()
+                .Where(p => !p.Email.Equals(inputDto.Email.Trim()))
+                .Where(p => p.PersonalInfo.FirstName.Equals(inputDto.FirstName.Trim()))
+                .Where(p => p.PersonalInfo.LastName.Equals(inputDto.LastName.Trim()))
+                .Where(p => p.PersonalInfo.DateOfBirth.Date.Equals(inputDto.DateOfBirth.Date))
+                .AnyAsync(cancellationToken);
         }
 
         private async Task<bool> IsEmailExistAsync(string email, CancellationToken cancellationToken = default)
@@ -49,9 +75,8 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             return await _dbContext.Customers.AsNoTracking().AnyAsync(p => p.Email.Equals(email.Trim()), cancellationToken);
         }
 
-        private CustomerPersonalInfo CreateCustomerPersonalInfo(CustomerInputDto inputDto)
-        {
-            return new CustomerPersonalInfo(inputDto.FirstName.Trim(), inputDto.LastName.Trim(), inputDto.DateOfBirth);
-        }
+
+
+        #endregion
     }
 }
