@@ -12,10 +12,10 @@ namespace Mc2.CrudTest.Domain.Customers
 
         Task<Customer> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
-        Task Create(Customer customer, CancellationToken cancellationToken = default); 
+        Task CreateAsync(Customer customer, CancellationToken cancellationToken = default); 
 
-        Task Update(Customer customer, CancellationToken cancellationToken = default);
+        Task UpdateAsync(Customer customer, CancellationToken cancellationToken = default);
 
-        Task DeleteAsync(string email, CancellationToken cancellationToken = default); 
+        Task DeleteAsync(Customer customer, CancellationToken cancellationToken = default); 
     }
 }

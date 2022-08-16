@@ -6,6 +6,11 @@ namespace Mc2.CrudTest.Domain.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {
+        // for testing
+        public ApplicationDbContext()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
