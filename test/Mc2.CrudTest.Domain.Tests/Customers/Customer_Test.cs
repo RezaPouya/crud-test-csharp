@@ -26,6 +26,10 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         }
 
 
-        
+        [Fact]
+        public void should_have_phone_number()
+        {
+            Assert.NotNull(_customer.PhoneNumber);
+        }
     }
 }
