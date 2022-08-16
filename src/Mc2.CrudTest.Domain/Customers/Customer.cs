@@ -11,9 +11,10 @@ namespace Mc2.CrudTest.Domain.Customers
         protected Customer()
         { }
 
-        public Customer(CustomerName name)
+        public Customer(CustomerName name, CustomerDateOfBirth birthDate)
         {
             Name = name;
+            DateOfBirth = birthDate;
         }
 
         public virtual CustomerName Name { get; protected set; }
