@@ -9,12 +9,13 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
             Validate(firstName , isFirstName:true);
             Validate(lastName , isFirstName:false);
 
-            FirstName = firstName;
-            LastName = lastName;
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
         }
 
         private static void Validate(string inputName, bool isFirstName )
         {
+            inputName = inputName.Trim();
             string name = isFirstName ? "first name" : "last name";
 
             if (string.IsNullOrEmpty(inputName))

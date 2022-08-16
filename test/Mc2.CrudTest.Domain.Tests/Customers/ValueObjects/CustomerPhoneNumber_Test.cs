@@ -28,5 +28,24 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
             var ex = Assert.Throws<CustomerException>(act);
             Assert.Contains("The customer phone number cannot be empty.", ex.Message);
         }
+
+
+        [Fact]
+        public void Should_throw_exception_if_phone_number_is_too_long()
+        {
+            Action act = () => new CustomerPhoneNumber("+9809383810430654546546421357498734321431313221323233");
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("The customer phone number is not valid.", ex.Message);
+        }
+
+
+        [Fact]
+        public void Should_throw_exception_if_entered_phone_number_is_not_cellphone_type()
+        {
+            // https://www.interfax.net/en/help/faxnumber_format
+            Action act = () => new CustomerPhoneNumber("+44-208-1234567");
+            var ex = Assert.Throws<CustomerException>(act);
+            Assert.Contains("Only cellphone number is acceptable", ex.Message);
+        }
     }
 }

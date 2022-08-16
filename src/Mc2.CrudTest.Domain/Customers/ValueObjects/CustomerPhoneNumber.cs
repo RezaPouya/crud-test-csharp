@@ -11,19 +11,29 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
     {
         protected CustomerPhoneNumber()
         {
-
         }
+        public CustomerPhoneNumber(string number)
+        {
+            Validate(number);
+            Number = number.Trim();
+        }
+
 
         public string Number { get; set; }
 
-        public CustomerPhoneNumber(string number)
+        public void  Validate(string number)
         {
-            Number = number;
+            var trimedNumber = number.Trim();
+            if (string.IsNullOrEmpty(trimedNumber))
+                throw new CustomerException("The customer phone number cannot be empty.");
+
+            if (trimedNumber.Length > 31)
+                throw new CustomerException("The customer phone number is not valid.");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            throw new NotImplementedException();
+            yield return Number;
         }
     }
 
