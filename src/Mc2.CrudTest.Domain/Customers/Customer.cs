@@ -17,5 +17,7 @@ namespace Mc2.CrudTest.Domain.Customers
         }
 
         public virtual CustomerName Name { get; protected set; }
+
+        public virtual CustomerDateOfBirth DateOfBirth { get; protected set; }  
     }
 }
