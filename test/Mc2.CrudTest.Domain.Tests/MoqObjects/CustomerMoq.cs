@@ -7,17 +7,15 @@ namespace Mc2.CrudTest.Domain.Tests.MoqObjects
     {
         private static string _email = "rpouya@hotmail.com";
         private static string _bankAccountNumber = "IR0000000000000000000000";
-        private static CustomerName _name;
+        private static CustomerPersonalInfo _personalInfo;
         private static Customer _customer;
-        private static CustomerDateOfBirth _dateOfBirth;
         private static CustomerPhoneNumber _phoneNumber;
 
         public static Customer GetDefaultCustomer()
         {
-            _name = new CustomerName("Reza", "Pouya");
-            _dateOfBirth = new CustomerDateOfBirth(System.DateTime.Now.AddYears(-32));
+            _personalInfo = new CustomerPersonalInfo("Reza", "Pouya" , System.DateTime.Now.AddYears(-32));
             _phoneNumber = new CustomerPhoneNumber("+98 9383810430");
-            _customer = new Customer(_email,_name, _dateOfBirth, _phoneNumber, _bankAccountNumber);
+            _customer = new Customer(_email,_personalInfo, _phoneNumber, _bankAccountNumber);
 
             return _customer;
         }
@@ -25,10 +23,9 @@ namespace Mc2.CrudTest.Domain.Tests.MoqObjects
 
         public static Customer GetDefaultCustomer(string email ="", string bankAccountNumber = "")
         {
-            _name = new CustomerName("Reza", "Pouya");
-            _dateOfBirth = new CustomerDateOfBirth(System.DateTime.Now.AddYears(-32));
+            _personalInfo = new CustomerPersonalInfo("Reza", "Pouya", System.DateTime.Now.AddYears(-32));
             _phoneNumber = new CustomerPhoneNumber("+98 9383810430");
-            _customer = new Customer(email, _name, _dateOfBirth, _phoneNumber, bankAccountNumber);
+            _customer = new Customer(email, _personalInfo, _phoneNumber, bankAccountNumber);
 
             return _customer;
         }

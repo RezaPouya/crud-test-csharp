@@ -13,13 +13,11 @@ namespace Mc2.CrudTest.Domain.Customers
         { }
 
         public Customer(string email,
-            CustomerName name,
-            CustomerDateOfBirth birthDate,
+            CustomerPersonalInfo personalInfo,
             CustomerPhoneNumber phoneNumber,
             string bankAccountNumber)
         {
-            Name = name;
-            DateOfBirth = birthDate;
+            PersonalInfo = personalInfo;
             PhoneNumber = phoneNumber;
             SetEmail(email);
             SetBankAccountNumber(bankAccountNumber);
@@ -28,9 +26,7 @@ namespace Mc2.CrudTest.Domain.Customers
         public string Email { get; protected set; }
         public string BankAccountNumber { get; protected set; }
 
-        public virtual CustomerName Name { get; protected set; }
-
-        public virtual CustomerDateOfBirth DateOfBirth { get; protected set; }
+        public virtual CustomerPersonalInfo PersonalInfo { get; protected set; }
 
         public virtual CustomerPhoneNumber PhoneNumber { get; protected set; }
 

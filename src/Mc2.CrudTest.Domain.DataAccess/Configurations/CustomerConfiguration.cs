@@ -22,7 +22,7 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
 
             // Customers must be unique in database: By Firstname, Lastname and DateOfBirth.
 
-            builder.OwnsOne(pi => pi.Name, builder =>
+            builder.OwnsOne(pi => pi.PersonalInfo, builder =>
             {
                 builder.Property(p => p.FirstName)
                 .HasColumnName("FirstName")
@@ -33,6 +33,12 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
                 .HasColumnName("LastName")
                 .HasMaxLength(64)
                 .IsRequired();
+
+                builder.Property(p => p.DateOfBirth)
+                .HasColumnName("DateOfBirth")
+                .IsRequired();
+
+                builder.HasIndex(e => new { e.FirstName, e.LastName , e.DateOfBirth}).IsUnique();
             });
 
             builder.OwnsOne(pi => pi.PhoneNumber, builder =>

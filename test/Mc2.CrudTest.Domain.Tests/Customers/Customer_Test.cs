@@ -22,9 +22,9 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         }
 
         [Fact]
-        public void CustomerShouldHaveName()
+        public void CustomerShouldHave_personal_info()
         {
-            Assert.NotNull(_customer.Name);
+            Assert.NotNull(_customer.PersonalInfo);
         }
 
 
