@@ -13,21 +13,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Presentation.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{11322972-3C82-4961-886B-EC4878926261}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain", "src\Mc2.CrudTest.Domain\Mc2.CrudTest.Domain.csproj", "{83764D73-6F10-430F-86D0-4062AB361A45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain", "src\Mc2.CrudTest.Domain\Mc2.CrudTest.Domain.csproj", "{83764D73-6F10-430F-86D0-4062AB361A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain.Application", "src\Mc2.CrudTest.Domain.Application\Mc2.CrudTest.Domain.Application.csproj", "{41D08231-1A7F-4750-B758-BC6395FBBEDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain.Application", "src\Mc2.CrudTest.Domain.Application\Mc2.CrudTest.Domain.Application.csproj", "{41D08231-1A7F-4750-B758-BC6395FBBEDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain.DataAccess", "Mc2.CrudTest.Domain.DataAccess\Mc2.CrudTest.Domain.DataAccess.csproj", "{47D41562-4259-4E65-A636-2E9F1A719D79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain.DataAccess", "Mc2.CrudTest.Domain.DataAccess\Mc2.CrudTest.Domain.DataAccess.csproj", "{47D41562-4259-4E65-A636-2E9F1A719D79}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9277977B-4A28-424A-9825-99EE32C70D37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{6432CE09-592E-4A79-8975-96FFBB05AEE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain.Tests", "test\Mc2.CrudTest.Domain.Tests\Mc2.CrudTest.Domain.Tests.csproj", "{D4F18780-DA6D-4178-86B7-FB5EFAE9D625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain.Tests", "test\Mc2.CrudTest.Domain.Tests\Mc2.CrudTest.Domain.Tests.csproj", "{D4F18780-DA6D-4178-86B7-FB5EFAE9D625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain.Application.Tests", "test\Mc2.CrudTest.Domain.Application.Tests\Mc2.CrudTest.Domain.Application.Tests.csproj", "{BAB39F4A-1444-45A3-B8EB-A301349C90A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain.Application.Tests", "test\Mc2.CrudTest.Domain.Application.Tests\Mc2.CrudTest.Domain.Application.Tests.csproj", "{BAB39F4A-1444-45A3-B8EB-A301349C90A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Domain.DataAccess.Tests", "test\Mc2.CrudTest.Domain.DataAccess.Tests\Mc2.CrudTest.Domain.DataAccess.Tests.csproj", "{71D42979-296E-4022-87B8-4EB2B78432A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mc2.CrudTest.Domain.DataAccess.Tests", "test\Mc2.CrudTest.Domain.DataAccess.Tests\Mc2.CrudTest.Domain.DataAccess.Tests.csproj", "{71D42979-296E-4022-87B8-4EB2B78432A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mc2.CrudTest.Utility", "src\Mc2.CrudTest.Utility\Mc2.CrudTest.Utility.csproj", "{49FA15DB-9F5B-41D8-AECF-04C965C21778}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{71D42979-296E-4022-87B8-4EB2B78432A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71D42979-296E-4022-87B8-4EB2B78432A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71D42979-296E-4022-87B8-4EB2B78432A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49FA15DB-9F5B-41D8-AECF-04C965C21778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49FA15DB-9F5B-41D8-AECF-04C965C21778}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49FA15DB-9F5B-41D8-AECF-04C965C21778}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49FA15DB-9F5B-41D8-AECF-04C965C21778}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{D4F18780-DA6D-4178-86B7-FB5EFAE9D625} = {9277977B-4A28-424A-9825-99EE32C70D37}
 		{BAB39F4A-1444-45A3-B8EB-A301349C90A2} = {9277977B-4A28-424A-9825-99EE32C70D37}
 		{71D42979-296E-4022-87B8-4EB2B78432A1} = {9277977B-4A28-424A-9825-99EE32C70D37}
+		{49FA15DB-9F5B-41D8-AECF-04C965C21778} = {11322972-3C82-4961-886B-EC4878926261}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4B5A26C9-68C1-49D9-9F32-AF907A1730C2}
