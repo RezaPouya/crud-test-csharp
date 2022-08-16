@@ -24,5 +24,12 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         {
             Assert.NotNull(_customer.Name);
         }
+
+
+        [Fact]
+        public void CustomerShouldDateOfBirth()
+        {
+            Assert.NotNull(_customer.DateOfBirth);
+        }
     }
 }
