@@ -1,15 +1,17 @@
-﻿using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
+﻿using Mc2.CrudTest.Domain.Customers;
+using Mc2.CrudTest.Domain.Manager.Customers;
+using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
 using Xunit;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests
 {
     internal class CustomerManager_Test : IClassFixture<ApplicationDbContextSeedDataFixture>
     {
-        private ApplicationDbContextSeedDataFixture _fixture;
+        private ICustomerManager _manager;
 
         public CustomerManager_Test(ApplicationDbContextSeedDataFixture fixture)
         {
-            _fixture = fixture;
+            _manager = new CustomerManager(fixture._applicationDbContext);
         }
     }
 }

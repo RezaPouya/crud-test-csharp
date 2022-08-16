@@ -8,13 +8,10 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
     public class CustomerManager : ICustomerManager
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<CustomerManager> _logger;
 
-        public CustomerManager(ApplicationDbContext dbContext,
-            ILogger<CustomerManager> logger)
+        public CustomerManager(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _logger = logger;
         }
 
         public Task CreateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
