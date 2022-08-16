@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Mc2.CrudTest.Utility\Mc2.CrudTest.Utility.csproj" />
   </ItemGroup>
 
