@@ -5,18 +5,19 @@ using MediatR;
 
 namespace Mc2.CrudTest.Domain.Application.Customers.CommandHandlers
 {
-    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand>
+    public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
     {
         private readonly ICustomerManager _manager;
 
-        public CreateCustomerCommandHandler(ICustomerManager manager)
+        public UpdateCustomerCommandHandler(ICustomerManager manager)
+
         {
             _manager = manager;
         }
 
-        public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            await _manager.CreateAsync(request.MapToInputDto(), cancellationToken);
+            await _manager.UpdateAsync(request.MapToInputDto(), cancellationToken);
             return new Unit();
         }
     }
