@@ -20,9 +20,6 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 
             RuleFor(p => p.DateOfBirth)
                 .NotNull()
-                .NotEqual(default(DateTime))
-                .GreaterThan(DateTime.Now.AddYears(-150).Date)
-                .LessThan(DateTime.Now)
                 .WithMessage("Date of birth is not valid.");
 
             RuleFor(v => v.FirstName)

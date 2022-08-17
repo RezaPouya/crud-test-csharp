@@ -2,7 +2,7 @@
 
 namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 {
-    public class CreateCustomerCommand : IRequest<bool>
+    public class CreateCustomerCommand : IRequest
     {
         public string Email { get; set; }
         public string BankAccountNumber { get; set; }

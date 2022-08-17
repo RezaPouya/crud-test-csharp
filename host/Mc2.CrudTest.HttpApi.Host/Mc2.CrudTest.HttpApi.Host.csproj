@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mc2.CrudTest.Domain.Application\Mc2.CrudTest.Domain.Application.csproj" />
     <ProjectReference Include="..\..\src\Mc2.CrudTest.Domain.DataAccess\Mc2.CrudTest.Domain.DataAccess.csproj" />
+    <ProjectReference Include="..\..\src\Mc2.CrudTest.Domain.Manager\Mc2.CrudTest.Domain.Manager.csproj" />
     <ProjectReference Include="..\..\src\Mc2.CrudTest.Domain\Mc2.CrudTest.Domain.csproj" />
   </ItemGroup>
 

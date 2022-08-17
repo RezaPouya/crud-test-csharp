@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
     <PackageReference Include="MediatR" Version="10.0.1" />
   </ItemGroup>
 
@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\CommandHandlers\" />
     <Folder Include="Customers\QueryHandlers\" />
     <Folder Include="Customers\Queries\" />
     <Folder Include="EventHandlers\Customers\" />
