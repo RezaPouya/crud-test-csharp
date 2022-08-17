@@ -8,7 +8,7 @@ using System;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
 {
-    public class ApplicationFixture : IDisposable
+    public class ApplicationTestFixture : IDisposable
     {
         public ApplicationDbContext _applicationDbContext { get; private set; }
         public IMediator _meidator; 
@@ -28,7 +28,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
             new CustomerPhoneNumber("+989383810430"),
             "IR0000001");
 
-        public ApplicationFixture()
+        public ApplicationTestFixture()
         {
             SetApplicationDbContext();
             _applicationDbContext.Customers.Add(customer_1);
@@ -40,7 +40,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
        
         private void SetApplicationDbContext()
         {
-            var dbName = $"AuthorPostsDb_{DateTime.Now.ToFileTimeUtc()}";
+            var dbName = $"CrudTestDb_{DateTime.Now.ToFileTimeUtc()}";
             var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(dbName)
                 .Options;

@@ -10,13 +10,13 @@ using Xunit;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests
 {
-    public class CustomerManager_Test : IClassFixture<ApplicationFixture>
+    public class CustomerManager_Test : IClassFixture<ApplicationTestFixture>
     {
         private ICustomerManager _manager;
         private IMediator _mediator;
         private ApplicationDbContext _dbContext;
 
-        public CustomerManager_Test(ApplicationFixture fixture)
+        public CustomerManager_Test(ApplicationTestFixture fixture)
         {
             _dbContext = fixture._applicationDbContext;
             _mediator = fixture._meidator;
