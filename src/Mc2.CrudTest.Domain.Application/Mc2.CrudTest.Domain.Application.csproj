@@ -7,12 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.2.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mc2.CrudTest.Domain.DataAccess\Mc2.CrudTest.Domain.DataAccess.csproj" />
     <ProjectReference Include="..\Mc2.CrudTest.Domain\Mc2.CrudTest.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Customers\CommandHandlers\" />
+    <Folder Include="Customers\QueryHandlers\" />
+    <Folder Include="Customers\Queries\" />
+    <Folder Include="EventHandlers\Customers\" />
   </ItemGroup>
 
 </Project>
