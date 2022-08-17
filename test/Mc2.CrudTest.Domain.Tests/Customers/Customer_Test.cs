@@ -36,7 +36,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
             var events = _customer.GetEvents();
             var firstEvent = (CustomerCreatedEto) events[0];
             Assert.NotNull(firstEvent);
-            Assert.Equal(_customer.Email , firstEvent.Email)
+            Assert.Equal(_customer.Email, firstEvent.Email);
 
 
 
