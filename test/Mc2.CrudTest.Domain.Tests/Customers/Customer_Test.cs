@@ -1,4 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
+using Mc2.CrudTest.Domain.Customers.Events;
 using Mc2.CrudTest.Domain.Tests.MoqObjects;
 using Mc2.CrudTest.Utility.Helpers;
 using System;
@@ -26,6 +27,18 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         public void customer_should_have_an_event_after_creation()
         {
             Assert.NotEmpty(_customer.GetEvents());
+
+        }
+
+        [Fact]
+        public void customer_should_have_an_event_after_creation_and_event_should_have_all_customer_data()
+        {
+            var events = _customer.GetEvents();
+            var firstEvent = (CustomerCreatedEto) events[0];
+            Assert.NotNull(firstEvent);
+            Assert.Equal(_customer.Email , firstEvent.Email)
+
+
 
         }
 

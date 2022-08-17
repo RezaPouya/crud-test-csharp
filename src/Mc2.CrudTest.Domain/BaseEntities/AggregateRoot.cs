@@ -13,7 +13,7 @@ namespace Mc2.CrudTest.Domain.BaseEntities
         [NotMapped]
         public IReadOnlyCollection<DomainEvent> DomainEvents => _events.AsReadOnly();
 
-        public virtual IEnumerable<DomainEvent> GetEvents()
+        public virtual List<DomainEvent> GetEvents()
         {
             return _events;
         }

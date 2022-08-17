@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Mc2.CrudTest.Utility\Mc2.CrudTest.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Customers\Mappers\" />
+  </ItemGroup>
+
 </Project>

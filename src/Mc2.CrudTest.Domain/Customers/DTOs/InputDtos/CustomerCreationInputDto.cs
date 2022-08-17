@@ -5,7 +5,6 @@ namespace Mc2.CrudTest.Domain.Customers.DTOs.InputDtos
     [Serializable]
     public class CustomerInputDto
     {
-        [Key]
         public string Email { get; set; }
         public string BankAccountNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
