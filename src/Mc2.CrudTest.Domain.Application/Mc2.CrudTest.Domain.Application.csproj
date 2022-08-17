@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Customers\QueryHandlers\" />
-    <Folder Include="Customers\Queries\" />
     <Folder Include="EventHandlers\Customers\" />
   </ItemGroup>
 
