@@ -1,7 +1,9 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.DataAccess;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
@@ -43,7 +45,8 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
                 .UseInMemoryDatabase(dbName)
                 .Options;
 
-            _applicationDbContext = new ApplicationDbContext(dbContextOptions);
+            var mediatorMoq = new Mock<IMediator>();
+            _applicationDbContext = new ApplicationDbContext(dbContextOptions , mediatorMoq.Object);
         }
 
         public void Dispose()
