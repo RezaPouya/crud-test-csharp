@@ -22,7 +22,7 @@ namespace Mc2.CrudTest.Domain.Customers
             PhoneNumber = phoneNumber;
             SetEmail(email);
             SetBankAccountNumber(bankAccountNumber);
-            AddEvent(this.MapToCreationEto());
+            AddEvent(this.MapToCreateEto());
         }
 
         public string Email { get; protected set; }
@@ -53,6 +53,7 @@ namespace Mc2.CrudTest.Domain.Customers
             SetBankAccountNumber(bankAcountNumber);
             PersonalInfo = new CustomerPersonalInfo(fname, lname, dateOfBirth);
             PhoneNumber = new CustomerPhoneNumber(phoneNumber);
+            AddEvent(this.MapToUpdateEto());
         }
 
         private void SetBankAccountNumber(string bankAccountNumber)
