@@ -30,4 +30,9 @@
 		<ProjectReference Include="..\..\src\Mc2.CrudTest.Domain.DataAccess\Mc2.CrudTest.Domain.DataAccess.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Commands\" />
+	  <Folder Include="Queries\" />
+	</ItemGroup>
+
 </Project>
