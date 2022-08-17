@@ -1,5 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.BaseEntities;
-using Mc2.CrudTest.Domain.Customers.Events;
+using Mc2.CrudTest.Domain.Customers.Mappers;
 using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Utility.Helpers;
 
@@ -22,7 +22,7 @@ namespace Mc2.CrudTest.Domain.Customers
             PhoneNumber = phoneNumber;
             SetEmail(email);
             SetBankAccountNumber(bankAccountNumber);
-            AddEvent(new CustomerCreatedEto());
+            AddEvent(this.MapToCreationEto());
         }
 
         public string Email { get; protected set; }
