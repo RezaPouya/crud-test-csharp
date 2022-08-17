@@ -1,7 +1,9 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.Customers.DTOs.InputDtos;
+using Mc2.CrudTest.Domain.Customers.Events;
 using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.DataAccess;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mc2.CrudTest.Domain.Manager.Customers
@@ -9,10 +11,12 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
     public class CustomerManager : ICustomerManager
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMediator _mediatR;
 
-        public CustomerManager(ApplicationDbContext dbContext)
+        public CustomerManager(ApplicationDbContext dbContext, IMediator mediatR)
         {
             _dbContext = dbContext;
+            _mediatR = mediatR;
         }
 
         public async Task CreateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
@@ -37,20 +41,6 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(string email, CancellationToken cancellationToken = default)
-        {
-            if (string.IsNullOrEmpty(email))
-                throw new ArgumentNullException(nameof(email));
-
-            Customer customer = await GetCustomerAsync(email, cancellationToken);
-
-            if (customer is null)
-                throw new CustomerException("There is no customer with this email.");
-
-            _dbContext.Remove(customer);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-        }
-
         public async Task UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
         {
             if (inputDto == null)
@@ -67,6 +57,21 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
             customer.Update(inputDto.FirstName, inputDto.LastName, inputDto.DateOfBirth, inputDto.BankAccountNumber, inputDto.PhoneNumber);
             _dbContext.Update(customer);
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync(string email, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(email))
+                throw new ArgumentNullException(nameof(email));
+
+            Customer customer = await GetCustomerAsync(email, cancellationToken);
+
+            if (customer is null)
+                throw new CustomerException("There is no customer with this email.");
+
+            _dbContext.Remove(customer);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _mediatR.Publish(new CustomerDeletedEto(email.Trim()));
         }
 
         private CustomerPersonalInfo CreateCustomerPersonalInfo(CustomerInputDto inputDto)

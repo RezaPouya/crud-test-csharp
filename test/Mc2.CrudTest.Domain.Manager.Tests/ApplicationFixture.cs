@@ -8,10 +8,10 @@ using System;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
 {
-    public class ApplicationDbContextSeedDataFixture : IDisposable
+    public class ApplicationFixture : IDisposable
     {
         public ApplicationDbContext _applicationDbContext { get; private set; }
-
+        public IMediator _meidator; 
 
         private Customer customer_1 = new Customer("a@b.com",
             new CustomerPersonalInfo("Mr.A", "Programmer", DateTime.Now.AddYears(-20)),
@@ -28,7 +28,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
             new CustomerPhoneNumber("+989383810430"),
             "IR0000001");
 
-        public ApplicationDbContextSeedDataFixture()
+        public ApplicationFixture()
         {
             SetApplicationDbContext();
             _applicationDbContext.Customers.Add(customer_1);
@@ -45,8 +45,8 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
                 .UseInMemoryDatabase(dbName)
                 .Options;
 
-            var mediatorMoq = new Mock<IMediator>();
-            _applicationDbContext = new ApplicationDbContext(dbContextOptions , mediatorMoq.Object);
+            _meidator = new Mock<IMediator>().Object;
+            _applicationDbContext = new ApplicationDbContext(dbContextOptions , _meidator);
         }
 
         public void Dispose()

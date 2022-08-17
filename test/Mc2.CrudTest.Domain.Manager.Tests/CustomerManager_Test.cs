@@ -3,21 +3,24 @@ using Mc2.CrudTest.Domain.Customers.DTOs.InputDtos;
 using Mc2.CrudTest.Domain.DataAccess;
 using Mc2.CrudTest.Domain.Manager.Customers;
 using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
+using MediatR;
 using System;
 using System.Linq;
 using Xunit;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests
 {
-    public class CustomerManager_Test : IClassFixture<ApplicationDbContextSeedDataFixture>
+    public class CustomerManager_Test : IClassFixture<ApplicationFixture>
     {
         private ICustomerManager _manager;
+        private IMediator _mediator;
         private ApplicationDbContext _dbContext;
 
-        public CustomerManager_Test(ApplicationDbContextSeedDataFixture fixture)
+        public CustomerManager_Test(ApplicationFixture fixture)
         {
             _dbContext = fixture._applicationDbContext;
-            _manager = new CustomerManager(_dbContext);
+            _mediator = fixture._meidator;
+            _manager = new CustomerManager(_dbContext, _mediator);
         }
 
         [Fact]
