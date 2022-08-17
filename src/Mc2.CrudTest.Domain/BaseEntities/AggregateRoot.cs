@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Mc2.CrudTest.Domain.BaseEntities
 {
@@ -7,7 +8,10 @@ namespace Mc2.CrudTest.Domain.BaseEntities
         protected AggregateRoot()
         { }
 
-        private readonly ICollection<DomainEvent> _events = new Collection<DomainEvent>();
+        private readonly List<DomainEvent> _events = new();
+        
+        [NotMapped]
+        public IReadOnlyCollection<DomainEvent> DomainEvents => _events.AsReadOnly();
 
         public virtual IEnumerable<DomainEvent> GetEvents()
         {
@@ -19,10 +23,11 @@ namespace Mc2.CrudTest.Domain.BaseEntities
             _events.Clear();
         }
 
-        protected virtual void AddEvent(object eventData)
+        protected virtual void AddEvent(DomainEvent @event)
         {
-            var lastEvent = _events.OrderBy(p => p.EventOrder).LastOrDefault()?.EventOrder ?? 0;
-            _events.Add(new DomainEvent(eventData, lastEvent + 1));
+            var lastEvent = DomainEvents.OrderBy(p => p.EventOrder).LastOrDefault()?.EventOrder ?? 0; 
+            @event.SetEventOrder(lastEvent);
+            _events.Add(@event);
         }
     }
 }

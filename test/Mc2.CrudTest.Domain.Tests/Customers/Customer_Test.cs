@@ -21,6 +21,14 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
             Assert.NotNull(_customer);
         }
 
+
+        [Fact]
+        public void customer_should_have_an_event_after_creation()
+        {
+            Assert.NotEmpty(_customer.GetEvents());
+
+        }
+
         [Fact]
         public void CustomerShouldHave_personal_info()
         {
