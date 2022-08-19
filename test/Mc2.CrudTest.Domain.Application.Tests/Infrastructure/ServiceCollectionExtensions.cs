@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace Mc2.CrudTest.Domain.Application.Tests
+namespace Mc2.CrudTest.Domain.Application.Tests.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {

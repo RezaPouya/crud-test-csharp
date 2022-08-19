@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
-
-namespace Mc2.CrudTest.Domain.Application.Tests
+using Respawn;
+namespace Mc2.CrudTest.Domain.Application.Tests.Infrastructure
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
@@ -26,10 +25,10 @@ namespace Mc2.CrudTest.Domain.Application.Tests
             builder.ConfigureServices((builder, services) =>
             {
                 services
-                    .Remove<DbContextOptions<ApplicationDbContext>>()
-                    .AddDbContext<ApplicationDbContext>((sp, options) =>
-                        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-                            builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                   .Remove<DbContextOptions<ApplicationDbContext>>()
+                   .AddDbContext<ApplicationDbContext>((sp, options) =>
+                       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+                           builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             });
         }
     }

@@ -30,7 +30,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
 
         public ApplicationTestFixture()
         {
-            SetApplicationDbContext();
+            SetServices();
             _applicationDbContext.Customers.Add(customer_1);
             _applicationDbContext.Customers.Add(customer_2);
             _applicationDbContext.Customers.Add(customer_3);
@@ -38,7 +38,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
         }
 
        
-        private void SetApplicationDbContext()
+        private void SetServices()
         {
             var dbName = $"CrudTestDb_{DateTime.Now.ToFileTimeUtc()}";
             var dbContextOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
