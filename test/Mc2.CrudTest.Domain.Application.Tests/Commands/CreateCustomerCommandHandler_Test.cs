@@ -77,16 +77,14 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
             ResetState().GetAwaiter().GetResult();
         }
 
-        private static Customer GetCustomer(string email, IServiceScope scope)
+        private static Customer? GetCustomer(string email, IServiceScope scope)
         {
             var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            var customer = applicationDbContext
+            return applicationDbContext
                 .Customers
                 .AsNoTracking()
                 .FirstOrDefault(p => p.Email.Equals(email));
-
-            return customer;
         }
     }
 }
