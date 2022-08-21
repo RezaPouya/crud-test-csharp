@@ -13,7 +13,8 @@ namespace Mc2.CrudTest.Utility.Helpers
 
                 PhoneNumber phone = phoneNumberUtil.Parse(phoneNumber.Trim(), CountryCodeSource.UNSPECIFIED.ToString());
 
-                return phoneNumberUtil.IsPossibleNumberForType(phone, PhoneNumberType.MOBILE);
+                return phoneNumberUtil.GetNumberType(phone) == PhoneNumberType.MOBILE ||
+                       phoneNumberUtil.GetNumberType(phone) == PhoneNumberType.FIXED_LINE_OR_MOBILE;
             }
             catch
             {
