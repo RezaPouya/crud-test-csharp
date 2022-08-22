@@ -6,6 +6,7 @@ using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
 using MediatR;
 using System;
 using System.Linq;
+using System.Threading;
 using Xunit;
 
 namespace Mc2.CrudTest.Domain.Manager.Tests
@@ -148,21 +149,22 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             };
 
             // act
-            _manager.CreateAsync(createInput).GetAwaiter().GetResult();
-            _manager.UpdateAsync(updateInput).GetAwaiter().GetResult();
+            var createdCustomer = _manager.CreateAsync(createInput).GetAwaiter().GetResult();
+            updateInput.Id = createdCustomer.Id;
+            var updatedCustomer = _manager.UpdateAsync(updateInput).GetAwaiter().GetResult();
 
             var customer = _dbContext.Customers.FirstOrDefault(p => p.Email.Equals(createInput.Email));
             // assert
             Assert.NotNull(customer);
-            Assert.Equal(updateInput.FirstName, customer.PersonalInfo.FirstName);
-            Assert.Equal(updateInput.LastName, customer.PersonalInfo.LastName);
-            Assert.Equal(updateInput.DateOfBirth.Date, customer.PersonalInfo.DateOfBirth.Date);
+            Assert.Equal(updatedCustomer.PersonalInfo.FirstName, customer.PersonalInfo.FirstName);
+            Assert.Equal(updatedCustomer.PersonalInfo.LastName, customer.PersonalInfo.LastName);
+            Assert.Equal(updatedCustomer.PersonalInfo.DateOfBirth.Date, customer.PersonalInfo.DateOfBirth.Date);
         }
 
         [Fact]
         public void should_throw_exception_if_customer_not_found_in_delete()
         {
-            Action act = () => _manager.DeleteAsync("a@delete3242341.com").GetAwaiter().GetResult();
+            Action act = () => _manager.DeleteAsync(3452345 , default(CancellationToken)).GetAwaiter().GetResult();
 
             // assert
             var ex = Assert.Throws<CustomerException>(act);
@@ -184,13 +186,15 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
             };
 
             // act
-            _manager.CreateAsync(createInput).GetAwaiter().GetResult();
-            _manager.DeleteAsync(createInput.Email).GetAwaiter().GetResult();
+            var customer = _manager.CreateAsync(createInput).GetAwaiter().GetResult();
+            var customerId = customer.Id;
 
-            var customer = _dbContext.Customers.FirstOrDefault(p => p.Email.Equals(createInput.Email));
+            _manager.DeleteAsync(customerId).GetAwaiter().GetResult();
+
+            var customer2 = _dbContext.Customers.FirstOrDefault(p => p.Id == customerId);
 
             // assert
-            Assert.Null(customer);
+            Assert.Null(customer2);
         }
     }
 }

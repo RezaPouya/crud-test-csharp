@@ -26,6 +26,7 @@ namespace Mc2.CrudTest.Domain.Customers.Mappers
         {
             return new CustomerUpdatedEto
             {
+                Id = customer.Id,
                 BankAccountNumber = customer.BankAccountNumber,
                 DateOfBirth = customer.PersonalInfo.DateOfBirth,
                 Email = customer.Email,

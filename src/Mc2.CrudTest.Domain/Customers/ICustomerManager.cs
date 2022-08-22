@@ -4,10 +4,10 @@ namespace Mc2.CrudTest.Domain.Customers
 {
     public interface ICustomerManager
     {
-        Task CreateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default);
+        Task<Customer> CreateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default);
 
-        Task UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default);
+        Task<Customer> UpdateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default);
 
-        Task DeleteAsync(string email, CancellationToken cancellationToken = default);
+        Task DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }

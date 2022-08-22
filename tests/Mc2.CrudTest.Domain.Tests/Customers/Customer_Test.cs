@@ -1,7 +1,7 @@
 ﻿using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.Customers.Events;
+using Mc2.CrudTest.Domain.Helpers;
 using Mc2.CrudTest.Domain.Tests.MoqObjects;
-using Mc2.CrudTest.Utility.Helpers;
 using System;
 using Xunit;
 
@@ -106,27 +106,29 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         [Fact]
         public void should_be_able_to_update_customer_info()
         {
-            _customer.Update("Ahmad", "Pouya", DateTime.Now.AddYears(-35), "IR455555", "+989163737500");
+            _customer.Update("a.pouya@a.com" , "Ahmad", "Pouya", DateTime.Now.AddYears(-35), "IR455555", "+989163737500");
 
-            Assert.Equal("Ahmad", _customer.PersonalInfo.FirstName);
-            Assert.Equal("Pouya", _customer.PersonalInfo.LastName);
+            Assert.Equal("a.pouya@a.com", _customer.Email);
+            Assert.Equal("ahmad", _customer.PersonalInfo.FirstName);
+            Assert.Equal("pouya", _customer.PersonalInfo.LastName);
             Assert.Equal(DateTime.Now.AddYears(-35).Date, _customer.PersonalInfo.DateOfBirth.Date);
-            Assert.Equal("IR455555", _customer.BankAccountNumber);
-            Assert.Equal("+989163737500", _customer.PhoneNumber.Number);
+            Assert.Equal("ir455555", _customer.BankAccountNumber);
+            Assert.Equal("989163737500", _customer.PhoneNumber.Number.ToString());
         }
 
 
         [Fact]
-        public void should_be_able_to_have_update_info_info()
+        public void should_update_event_have_info()
         {
-            _customer.Update("Ahmad", "Pouya2", DateTime.Now.AddYears(-35), "IR455555", "+989163737500");
+            _customer.Update("a.pouya@a2.com", "Ahmad", "Pouya2", DateTime.Now.AddYears(-35), "IR455555", "+989163737500");
             var events = _customer.GetEvents();
             var firstEvent = (CustomerUpdatedEto)events[1];
-            Assert.Equal("Ahmad", firstEvent.FirstName);
-            Assert.Equal("Pouya2", firstEvent.LastName);
+            Assert.Equal("a.pouya@a2.com", firstEvent.Email);
+            Assert.Equal("ahmad", firstEvent.FirstName);
+            Assert.Equal("pouya2", firstEvent.LastName);
             Assert.Equal(DateTime.Now.AddYears(-35).Date, firstEvent.DateOfBirth.Date);
-            Assert.Equal("IR455555", firstEvent.BankAccountNumber);
-            Assert.Equal("+989163737500", firstEvent.PhoneNumber);
+            Assert.Equal("ir455555", firstEvent.BankAccountNumber);
+            Assert.Equal("989163737500".Trim(), firstEvent.PhoneNumber.ToString());
         }
     }
 }

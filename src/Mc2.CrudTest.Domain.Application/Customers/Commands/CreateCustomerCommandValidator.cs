@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Mc2.CrudTest.Utility.Helpers;
+using Mc2.CrudTest.Domain.Helpers;
 
 namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 {

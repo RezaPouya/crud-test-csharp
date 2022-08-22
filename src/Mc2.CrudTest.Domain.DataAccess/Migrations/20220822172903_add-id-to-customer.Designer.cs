@@ -4,6 +4,7 @@ using Mc2.CrudTest.Domain.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Mc2.CrudTest.Domain.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220822172903_add-id-to-customer")]
+    partial class addidtocustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace Mc2.CrudTest.Domain.DataAccess.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<DateTime>("DateOfBirth")
-                                .HasColumnType("date")
+                                .HasColumnType("datetime2")
                                 .HasColumnName("DateOfBirth");
 
                             b1.Property<string>("FirstName")

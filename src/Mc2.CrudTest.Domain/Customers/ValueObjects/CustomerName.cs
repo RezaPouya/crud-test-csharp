@@ -10,9 +10,9 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
             ValidateName(lastName, isFirstName: false);
             ValidateDateOfBirth(dateOfBirth);
 
-            FirstName = firstName.Trim();
-            LastName = lastName.Trim();
-            DateOfBirth = dateOfBirth;
+            FirstName = firstName.ToLower().Trim();
+            LastName = lastName.ToLower().Trim();
+            DateOfBirth = dateOfBirth.Date;
         }
 
         public DateTime DateOfBirth { get; protected set; }

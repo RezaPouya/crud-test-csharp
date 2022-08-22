@@ -28,7 +28,7 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
             var command = new CreateCustomerCommand
             {
                 BankAccountNumber = "IR000",
-                DateOfBirth = System.DateTime.Now.AddYears(-32),
+                DateOfBirth = DateTime.Now.AddYears(-32),
                 Email = "r.pouya@hotmail.com",
                 FirstName = "Reza",
                 LastName = "Pouya",
@@ -43,8 +43,8 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
                 mediator.Send(command);
 
                 // Assert
-
                 var customer = GetCustomer(command.Email, scope);
+
                 Assert.NotNull(customer);
             }
 
@@ -84,7 +84,7 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
             return applicationDbContext
                 .Customers
                 .AsNoTracking()
-                .FirstOrDefault(p => p.Email.Equals(email));
+                .FirstOrDefault(p => p.Email.Equals(email.SanitizeToLower()));
         }
     }
 }

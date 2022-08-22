@@ -1,5 +1,5 @@
 ﻿using Mc2.CrudTest.Domain.BaseEntities;
-using Mc2.CrudTest.Utility.Helpers;
+using Mc2.CrudTest.Domain.Helpers;
 
 namespace Mc2.CrudTest.Domain.Customers.ValueObjects
 {
@@ -12,21 +12,18 @@ namespace Mc2.CrudTest.Domain.Customers.ValueObjects
         public CustomerPhoneNumber(string number)
         {
             Validate(number);
-            Number = number.Trim();
+            Number = Convert.ToUInt64(PhoneNumberHelper.SanitizePhoneNumber(number));
         }
 
-        public string Number { get; protected set; }
-
+        public ulong Number { get; protected set; }
         public void Validate(string number)
         {
-            var trimedNumber = number.Trim();
-            if (string.IsNullOrEmpty(trimedNumber))
+            var sanitizedNumber = number.SanitizeToLower();
+
+            if (string.IsNullOrEmpty(sanitizedNumber))
                 throw new CustomerException("The customer phone number cannot be empty.");
 
-            if (trimedNumber.Length > 31)
-                throw new CustomerException("The customer phone number is not valid.");
-
-            if (PhoneNumberHelper.IsValidCellphoneNumber(trimedNumber) == false)
+            if (PhoneNumberHelper.IsValidCellphoneNumber(sanitizedNumber) == false)
                 throw new CustomerException("Only cellphone number is acceptable.");
         }
 
