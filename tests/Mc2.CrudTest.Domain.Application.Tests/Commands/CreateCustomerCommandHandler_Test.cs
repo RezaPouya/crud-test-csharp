@@ -72,7 +72,7 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
                 Action act = () => mediator.Send(command, It.IsAny<CancellationToken>()).GetAwaiter().GetResult();
                 var ex = Assert.Throws<CustomerException>(act);
-                Assert.Contains("There is a customer with same email.", ex.Message);
+                Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail), ex.Message);
             }
             ResetState().GetAwaiter().GetResult();
         }

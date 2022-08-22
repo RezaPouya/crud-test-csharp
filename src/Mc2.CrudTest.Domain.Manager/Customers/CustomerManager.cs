@@ -25,10 +25,10 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
                 throw new ArgumentNullException(nameof(inputDto));
 
             if (await IsEmailExistAsync(inputDto.Email))
-                throw new CustomerException("There is a customer with same email.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.DuplicateEmail);
 
             if (await IsPersonalInfoUniqueAsync(inputDto, cancellationToken))
-                throw new CustomerException("There is a customer with same personal info.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.DuplicateCustomerInfo);
 
             var customerPhoneNumber = new CustomerPhoneNumber(inputDto.PhoneNumber.Trim());
 
