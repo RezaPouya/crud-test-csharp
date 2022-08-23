@@ -11,12 +11,12 @@ using TechTalk.SpecFlow;
 namespace Mc2.CrudTest.AcceptanceTests.Hooks;
 
 [Binding]
-public sealed class CreateReadEditDeleteCustomerHooks
+public sealed class ManageCustomerHooks
 {
     // For additional details on SpecFlow hooks see http://go.specflow.org/doc-hooks
     private readonly IObjectContainer _objectContainer;
 
-    public CreateReadEditDeleteCustomerHooks(IObjectContainer objectContainer)
+    public ManageCustomerHooks(IObjectContainer objectContainer)
     {
         _objectContainer = objectContainer;
     }

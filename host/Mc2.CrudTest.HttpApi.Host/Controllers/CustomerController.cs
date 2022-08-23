@@ -44,10 +44,10 @@ namespace Mc2.CrudTest.HttpApi.Host.Controllers
         }
 
         [HttpGet("email/{email}")]
-        public async Task<ActionResult<CustomerOutputDto>> GetByEmail(string email, CancellationToken cancellationToken)
+        public async Task<CustomerOutputDto> GetByEmail(string email, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(email))
-                return BadRequest();
+                return null;
 
             return await _mediator.Send(new GetCustomerByEmailQuery(email), cancellationToken);
         }

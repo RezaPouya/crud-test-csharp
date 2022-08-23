@@ -1,8 +1,7 @@
-using System;
-using System.Net.Http.Json;
 using Mc2.CrudTest.AcceptanceTests.Models.DTOs.InputDtos;
 using Mc2.CrudTest.AcceptanceTests.Models.DTOs.OutputDtos;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace Mc2.CrudTest.AcceptanceTests.Drivers
 {
@@ -15,40 +14,51 @@ namespace Mc2.CrudTest.AcceptanceTests.Drivers
             _httpClient = httpClient;
         }
 
-        public async Task<CustomerOutputResponse> CreateCustomer(CustomerInputRequest request)
+        public async Task<bool> CreateCustomer(CustomerInputRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("/api/Customer", request);
 
             if (response.IsSuccessStatusCode)
-                return await GetResponseModelFromContent<CustomerOutputResponse>(response);
+                return true;
 
-            return null;
+            return false;
         }
 
-        public async Task<CustomerOutputResponse> UpdateCustomer(CustomerInputRequest request)
+        public async Task<bool> UpdateCustomer(CustomerInputRequest request)
         {
-            var response = await _httpClient.PutAsJsonAsync("/api/Customer", request);
+            var response = await _httpClient.PutAsJsonAsync($"/api/Customer/{request.Id}", request);
 
             if (response.IsSuccessStatusCode)
-                return await GetResponseModelFromContent<CustomerOutputResponse>(response);
+                return true;
 
-            return null;
+            return false;
         }
 
-        public async Task<CustomerOutputResponse> DeleteCustomer(string email)
+        public async Task<bool> DeleteCustomer(string email)
         {
             var response = await _httpClient.DeleteAsync($"/api/Customer/${email}");
 
             if (response.IsSuccessStatusCode)
-                return await GetResponseModelFromContent<CustomerOutputResponse>(response);
+                return true;
 
-            return null;
+            return false;
         }
 
-        private static async Task<T> GetResponseModelFromContent<T>(HttpResponseMessage response) where T : class
+        public async Task<CustomerOutputResponse> GetCustomerCustomerByEmail(string email)
         {
-            var contentJson = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+            return await _httpClient.GetFromJsonAsync<CustomerOutputResponse>($"/api/Customer/email/${email}");
+        }
+
+        public async Task<IEnumerable<CustomerOutputResponse>> GetAllCustomer()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<CustomerOutputResponse>>($"/api/Customer/All");
+        }
+
+        private static async Task<T> GetResponseFromContent<T>(HttpResponseMessage response) where T : class
+        {
+
+            var contentString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(contentString);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Mc2.CrudTest.Domain.JsonConverters;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos
 {

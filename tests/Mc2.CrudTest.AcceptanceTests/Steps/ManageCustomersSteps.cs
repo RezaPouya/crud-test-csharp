@@ -1,19 +1,21 @@
-﻿using Mc2.CrudTest.AcceptanceTests.Drivers;
+﻿using FluentAssertions;
+using Mc2.CrudTest.AcceptanceTests.Drivers;
 using Mc2.CrudTest.AcceptanceTests.Models;
 using Mc2.CrudTest.AcceptanceTests.Models.DTOs.InputDtos;
 using TechTalk.SpecFlow.Assist;
+using Xunit;
 
 namespace Mc2.CrudTest.AcceptanceTests.Steps;
 
 [Binding]
-public class ManageCustomersSteps
+public class ManageCustomerStepDefinitions
 {
     private readonly WebClientDriver _webClient;
     private readonly CustomerInputRequest _customerInputRequest;
     private readonly ScenarioContext _scenarioContext;
     private IEnumerable<BusinessError> _businessErrors = new List<BusinessError>();
 
-    public ManageCustomersSteps(WebClientDriver webClient, ScenarioContext scenarioContext)
+    public ManageCustomerStepDefinitions(WebClientDriver webClient, ScenarioContext scenarioContext)
     {
         _webClient = webClient;
         _scenarioContext = scenarioContext;
@@ -66,6 +68,24 @@ public class ManageCustomersSteps
     public async Task WhenUserCreateCustomer()
     {
         var response = await _webClient.CreateCustomer(_customerInputRequest);
-        _scenarioContext.Add($"createdCustomer{response.Id}", response);
+        response.Should().BeTrue();
+        //_scenarioContext.Add($"createdCustomer{response.Id}", response);
     }
+
+    [Then(@"user can lookup all customers and filter by Email of (.*) and get ""([^""]*)"" records")]
+    public async Task ThenUserCanLookupAllCustomersAndFilterByEmailAndGetRecords(string email )
+    {
+        var customers = await _webClient.GetAllCustomer();
+        var eamil = email.ToLower().Trim();
+        customers.Should().ContainSingle(p=>p.Email.Equals(email));
+    }
+
+    [Then(@"user can lookup all customers and filter by Email of john@doe\.com and get ""([^""]*)"" record")]
+    public async Task ThenUserCanLookupAllCustomersAndFilterByEmailOf_JohnDoe_ComAndGetRecord(string p0)
+    {
+        var customers = await _webClient.GetAllCustomer();
+        customers.Should().ContainSingle(p => p.Email.Equals("john@doe.com"));
+    }
+
+
 }

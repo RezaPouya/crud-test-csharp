@@ -20,17 +20,14 @@
 		And Phone number of <PhoneNumber>
 		And Bank Account Number of <BankAccountNumber>
 		When user create customer 
-		Then user can lookup all customers and filter by Email of <Email> and get "1" records
-		When user edit customer with new email of "new@email.com"
-		Then user can lookup all customers and filter by Email of <Email> and get "0" records
-		And user can lookup all customers and filter by Email of "new@email.com" and get "1" records
-		When user delete customer by Email of "new@email.com"
-		Then user can lookup customer by Email of "new@email.com" and get "0" records
-		And user can lookup customer by Email of <Email> and get "0" records
+		Then user can lookup all customers and filter by Email of <Email> and get "1" record
+		#When user edit customer with new email of "new@email.com"
+		#Then user can lookup all customers and filter by Email of <Email> and get "0" records
+		#And user can lookup all customers and filter by Email of "new@email.com" and get "1" records
+		#When user delete customer by Email of "new@email.com"
+		#Then user can lookup customer by Email of "new@email.com" and get "0" records
+		#And user can lookup customer by Email of <Email> and get "0" records
 
 		Examples:
 		  | ID | FirstName | LastName  | Email         		| PhoneNumber   | DateOfBirth | BankAccountNumber |
 		  | 1  | John      | Doe       | john@doe.com  		| +989121234567 | 01-JAN-2000 | IR000000000000001 |
-		  | 2  | Reza      | Pouya     | rpouya@hotmail.com | +989383810430 | 01-JAN-1990 | IR000000000000002 |
-    
-
