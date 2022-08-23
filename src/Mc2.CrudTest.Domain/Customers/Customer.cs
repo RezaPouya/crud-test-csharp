@@ -1,7 +1,7 @@
 ﻿using Mc2.CrudTest.Domain.BaseEntities;
 using Mc2.CrudTest.Domain.Customers.Mappers;
 using Mc2.CrudTest.Domain.Customers.ValueObjects;
-using Mc2.CrudTest.Utility.Helpers;
+using Mc2.CrudTest.Domain.Helpers;
 
 namespace Mc2.CrudTest.Domain.Customers
 {
@@ -25,6 +25,7 @@ namespace Mc2.CrudTest.Domain.Customers
             AddEvent(this.MapToCreateEto());
         }
 
+        public int Id { get; protected set; }
         public string Email { get; protected set; }
         public string BankAccountNumber { get; protected set; }
 
@@ -34,7 +35,7 @@ namespace Mc2.CrudTest.Domain.Customers
 
         private void SetEmail(string email)
         {
-            email = email?.Trim() ?? string.Empty;
+            email = email?.ToLower().Trim() ?? string.Empty;
 
             if (string.IsNullOrEmpty(email))
                 throw new CustomerException("The customer email cannot be empty.");
@@ -48,9 +49,10 @@ namespace Mc2.CrudTest.Domain.Customers
             this.Email = email;
         }
 
-        public void Update(string fname, string lname, DateTime dateOfBirth, string bankAcountNumber, string phoneNumber)
+        public void Update(string email , string fname, string lname, DateTime dateOfBirth, string bankAcountNumber, string phoneNumber)
         {
             SetBankAccountNumber(bankAcountNumber);
+            SetEmail(email);
             PersonalInfo = new CustomerPersonalInfo(fname, lname, dateOfBirth);
             PhoneNumber = new CustomerPhoneNumber(phoneNumber);
             AddEvent(this.MapToUpdateEto());
@@ -58,7 +60,7 @@ namespace Mc2.CrudTest.Domain.Customers
 
         private void SetBankAccountNumber(string bankAccountNumber)
         {
-            bankAccountNumber = bankAccountNumber?.Trim() ?? string.Empty;
+            bankAccountNumber = bankAccountNumber?.ToLower()?.Trim() ?? string.Empty;
 
             if (string.IsNullOrEmpty(bankAccountNumber))
                 throw new CustomerException("The customer bank account number cannot be empty.");

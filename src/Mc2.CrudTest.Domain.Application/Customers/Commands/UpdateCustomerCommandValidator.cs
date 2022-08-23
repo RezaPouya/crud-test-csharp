@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Mc2.CrudTest.Utility.Helpers;
+using Mc2.CrudTest.Domain.Helpers;
 
 namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 {
@@ -7,6 +7,10 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
     {
         public UpdateCustomerCommandValidator()
         {
+            RuleFor(p => p.Id)
+                .GreaterThan(0)
+                .WithMessage("Id is not valid.");
+
             RuleFor(p => p.Email)
                 .NotEmpty()
                 .MaximumLength(254)

@@ -16,7 +16,7 @@ namespace Mc2.CrudTest.Domain.Application.Customers.CommandHandlers
 
         public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            await _manager.DeleteAsync(request.Email, cancellationToken);
+            await _manager.DeleteAsync(request.Id, cancellationToken);
             return new Unit();
         }
     }

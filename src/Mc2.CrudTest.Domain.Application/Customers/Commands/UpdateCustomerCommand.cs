@@ -4,6 +4,7 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 {
     public class UpdateCustomerCommand : IRequest
     {
+        public int Id { get; set; }
         public string Email { get; set; }
         public string BankAccountNumber { get; set; }
         public DateTime DateOfBirth { get; set; }

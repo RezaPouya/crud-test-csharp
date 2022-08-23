@@ -35,7 +35,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers.ValueObjects
         {
             Action act = () => new CustomerPhoneNumber("+9809383810430654546546421357498734321431313221323233");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The customer phone number is not valid.", ex.Message);
+            Assert.Contains("Only cellphone number is acceptable.", ex.Message);
         }
 
 

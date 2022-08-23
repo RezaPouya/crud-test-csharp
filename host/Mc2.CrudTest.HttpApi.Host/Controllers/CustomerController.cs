@@ -26,24 +26,24 @@ namespace Mc2.CrudTest.HttpApi.Host.Controllers
             return Ok();
         }
 
-        [HttpPut("{email}")]
-        public async Task<IActionResult> Update(string email , UpdateCustomerCommand command, CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateCustomerCommand command, CancellationToken cancellationToken)
         {
-            if(email != command.Email)
+            if (id != command.Id)
                 return BadRequest();
 
             await _mediator.Send(command, cancellationToken);
             return Ok();
         }
 
-        [HttpDelete("{email}")]
-        public async Task<IActionResult> Delete(string email, CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new DeleteCustomerCommand(email), cancellationToken);
+            await _mediator.Send(new DeleteCustomerCommand(id), cancellationToken);
             return Ok();
         }
 
-        [HttpGet("{email}")]
+        [HttpGet("email/{email}")]
         public async Task<ActionResult<CustomerOutputDto>> GetByEmail(string email, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(email))
@@ -52,8 +52,17 @@ namespace Mc2.CrudTest.HttpApi.Host.Controllers
             return await _mediator.Send(new GetCustomerByEmailQuery(email), cancellationToken);
         }
 
+        [HttpGet("id/{id}")]
+        public async Task<ActionResult<CustomerOutputDto>> GetById(int id, CancellationToken cancellationToken)
+        {
+            if (id == default(int) || id < 0)
+                return BadRequest();
+
+            return await _mediator.Send(new GetCustomerByIdQuery(id), cancellationToken);
+        }
+
         [HttpGet("All")]
-        public async Task<ActionResult<IEnumerable<CustomerOutputDto>>> GetAll( CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<CustomerOutputDto>>> GetAll(CancellationToken cancellationToken)
         {
             return await _mediator.Send(new GetAllCustomersQuery(), cancellationToken);
         }

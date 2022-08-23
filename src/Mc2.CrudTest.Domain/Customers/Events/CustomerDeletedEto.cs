@@ -9,11 +9,11 @@ namespace Mc2.CrudTest.Domain.Customers.Events
         {
         }
 
-        public CustomerDeletedEto(string email)
+        public CustomerDeletedEto(int id)
         {
-            Email = email;
+            Id = id;
         }
 
-        public string Email { get; set; }
+        public int Id { get; set; }
     }
 }

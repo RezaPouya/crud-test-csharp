@@ -1,11 +1,10 @@
 ﻿using System.Text;
 
-namespace Mc2.CrudTest.Utility.Helpers
+namespace Mc2.CrudTest.Domain.Helpers
 {
     public static class StringGeneratorHelper
     {
         private const string AllowedChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#@$^*()";
-
         public static string GenerateRandom(int max)
             
         {
