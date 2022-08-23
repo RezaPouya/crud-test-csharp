@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos
+namespace Mc2.CrudTest.AcceptanceTests.Models.DTOs.OutputDtos
 {
     [Serializable]
-    public class CustomerOutputDto
+    public class CustomerOutputResponse
     {
         public int Id { get; set; } 
         public string Email { get; set; }

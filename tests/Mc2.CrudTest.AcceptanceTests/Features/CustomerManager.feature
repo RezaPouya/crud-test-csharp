@@ -8,7 +8,7 @@
           | 103  | Invalid Bank Account Number                                |
           | 201  | Duplicate customer by First-name, Last-name, Date-of-Birth |
           | 202  | Duplicate customer by Email address                        |
-
+    
     @ignore
     Scenario Outline: Create Read Edit Delete Customer
         When user creates a customer with <FirstName>

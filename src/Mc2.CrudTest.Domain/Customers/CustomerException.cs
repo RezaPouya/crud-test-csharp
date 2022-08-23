@@ -14,9 +14,5 @@ namespace Mc2.CrudTest.Domain.Customers
         public CustomerException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
-
-
-
-
     }
 }

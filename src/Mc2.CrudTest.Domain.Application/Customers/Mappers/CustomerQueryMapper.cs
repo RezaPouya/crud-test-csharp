@@ -17,6 +17,7 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Mappers
 
             return new CustomerOutputDto
             {
+                Id = p.Id,
                 BankAccountNumber = p.BankAccountNumber,
                 DateOfBirth = p.PersonalInfo.DateOfBirth,
                 Email = p.Email,

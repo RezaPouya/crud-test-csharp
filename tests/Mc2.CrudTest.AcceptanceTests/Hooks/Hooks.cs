@@ -1,4 +1,7 @@
-﻿using TechTalk.SpecFlow;
+﻿using BoDi;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
+using TechTalk.SpecFlow;
 
 namespace Mc2.CrudTest.AcceptanceTests.Hooks
 {
@@ -6,7 +9,6 @@ namespace Mc2.CrudTest.AcceptanceTests.Hooks
     public sealed class Hooks
     {
         // For additional details on SpecFlow hooks see http://go.specflow.org/doc-hooks
-
         [BeforeScenario("@tag1")]
         public void BeforeScenarioWithTag()
         {

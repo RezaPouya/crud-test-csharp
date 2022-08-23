@@ -24,6 +24,7 @@ namespace Mc2.CrudTest.Domain.Application.Customers.QueryHandlers
                 .Where(p => p.Email.Equals(request.Email.ToString()))
                 .Select(p => new CustomerOutputDto
                 {
+                    Id = p.Id,  
                     BankAccountNumber = p.BankAccountNumber,
                     DateOfBirth = p.PersonalInfo.DateOfBirth,
                     Email = p.Email,
