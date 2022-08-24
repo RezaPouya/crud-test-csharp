@@ -2,6 +2,7 @@
 using Mc2.CrudTest.Domain.Customers.Mappers;
 using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Mc2.CrudTest.Domain.Customers
 {
@@ -25,6 +26,7 @@ namespace Mc2.CrudTest.Domain.Customers
             AddEvent(this.MapToCreateEto());
         }
 
+        [Key]
         public int Id { get; protected set; }
         public string Email { get; protected set; }
         public string BankAccountNumber { get; protected set; }

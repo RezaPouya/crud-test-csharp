@@ -1,15 +1,14 @@
-using Mc2.CrudTest.AcceptanceTests.Models.DTOs.InputDtos;
-using Mc2.CrudTest.AcceptanceTests.Models.DTOs.OutputDtos;
+using Mc2.CrudTest.AcceptanceTests.Models.DTOs;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace Mc2.CrudTest.AcceptanceTests.Drivers
 {
-    public class WebClientDriver
+    public class WebClient
     {
         protected readonly HttpClient _httpClient;
 
-        public WebClientDriver(HttpClient httpClient)
+        public WebClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
@@ -34,9 +33,10 @@ namespace Mc2.CrudTest.AcceptanceTests.Drivers
             return false;
         }
 
-        public async Task<bool> DeleteCustomer(string email)
+        public async Task<bool> DeleteCustomer(int id)
         {
-            var response = await _httpClient.DeleteAsync($"/api/Customer/${email}");
+            var path = string.Format("/api/Customer/{0}", id);
+            var response = await _httpClient.DeleteAsync(path);
 
             if (response.IsSuccessStatusCode)
                 return true;
@@ -46,7 +46,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Drivers
 
         public async Task<CustomerOutputResponse> GetCustomerCustomerByEmail(string email)
         {
-            return await _httpClient.GetFromJsonAsync<CustomerOutputResponse>($"/api/Customer/email/${email}");
+            return await _httpClient.GetFromJsonAsync<CustomerOutputResponse>($"/api/Customer/email/{email}");
         }
 
         public async Task<IEnumerable<CustomerOutputResponse>> GetAllCustomer()

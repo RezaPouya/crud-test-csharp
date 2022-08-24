@@ -5,6 +5,7 @@ using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Mc2.CrudTest.Domain.Manager.Customers
 {
@@ -12,11 +13,13 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediatR;
+        private readonly ILogger<CustomerManager> _logger;
 
-        public CustomerManager(ApplicationDbContext dbContext, IMediator mediatR)
+        public CustomerManager(ApplicationDbContext dbContext, IMediator mediatR, ILogger<CustomerManager> logger)
         {
             _dbContext = dbContext;
             _mediatR = mediatR;
+            _logger = logger;
         }
 
         public async Task<Customer> CreateAsync(CustomerInputDto inputDto, CancellationToken cancellationToken = default)
@@ -72,7 +75,15 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
 
             _dbContext.Update(customer);
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+            catch(Exception ex)
+            {
+                throw ex; 
+            }
+            
 
             return customer;
         }

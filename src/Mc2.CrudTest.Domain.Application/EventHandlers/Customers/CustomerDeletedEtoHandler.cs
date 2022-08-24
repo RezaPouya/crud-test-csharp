@@ -8,6 +8,11 @@ namespace Mc2.CrudTest.Domain.Application.EventHandlers.Customers
     {
         private readonly ILogger<CustomerDeletedEtoHandler> _logger;
 
+        public CustomerDeletedEtoHandler(ILogger<CustomerDeletedEtoHandler> logger)
+        {
+            _logger = logger;
+        }
+
         public Task Handle(CustomerDeletedEto notification, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Domain Event: {DomainEvent}", notification.GetType().Name);

@@ -13,7 +13,7 @@ namespace Mc2.CrudTest.Domain.Tests.JsonConverters
         [Theory]
         [InlineData("01-JAN-2000", "01-Jan-2000")]
         [InlineData("01-jan-2000", "01-Jan-2000")]
-        //[InlineData("2000-01-01", "01-Jan-2000")]
+        [InlineData("2000-01-01", "01-Jan-2000")]
         public void Should_be_able_to_cast_to_dateTime(string input, string exceptedResult)
         {
             var jsonConverter = new DateOfBirthJsonConverter();

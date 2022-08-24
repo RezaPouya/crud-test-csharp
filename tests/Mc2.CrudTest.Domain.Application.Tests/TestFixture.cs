@@ -51,6 +51,16 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Infrastructure
                 applicationDbContext.Customers.Add(TestCustomers.customer_1);
             }
 
+            //if (applicationDbContext.Customers.Any(p => p.Email == TestCustomers.customer_2.Email) == false)
+            //{
+            //    applicationDbContext.Customers.Add(TestCustomers.customer_2);
+            //}
+
+            //if (applicationDbContext.Customers.Any(p => p.Email == TestCustomers.customer_3.Email) == false)
+            //{
+            //    applicationDbContext.Customers.Add(TestCustomers.customer_3);
+            //}
+
             applicationDbContext.SaveChangesAsync().GetAwaiter().GetResult();
         }
     }

@@ -14,47 +14,17 @@ using Xunit;
 
 namespace Mc2.CrudTest.Domain.Application.Tests.Commands
 {
-    public class CreateCustomerCommandHandler_Test : TestFixture
+    public class CreateCustomerCommandHandler_Test : TestFixture, IDisposable
     {
         public CreateCustomerCommandHandler_Test(CustomWebApplicationFactory factory) : base(factory)
         {
-        }
-
-        [Fact]
-        public void should_create_user()
-        {
             CreateInitialCustomers();
-            // Arrange
-            var command = new CreateCustomerCommand
-            {
-                BankAccountNumber = "IR000",
-                DateOfBirth = DateTime.Now.AddYears(-32),
-                Email = "r.pouya@hotmail.com",
-                FirstName = "Reza",
-                LastName = "Pouya",
-                PhoneNumber = "+989383810430"
-            };
-
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                // Act
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-                mediator.Send(command);
-
-                // Assert
-                var customer = GetCustomer(command.Email, scope);
-
-                Assert.NotNull(customer);
-            }
-
-            ResetState().GetAwaiter().GetResult();
         }
 
         [Fact]
         public void should_throw_exception_if_want_to_insert_duplicate_email()
         {
-            CreateInitialCustomers();
+            using var scope = _scopeFactory.CreateScope();
 
             var command = new CreateCustomerCommand
             {
@@ -66,15 +36,39 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
                 PhoneNumber = "+989383810430"
             };
 
-            using (var scope = _scopeFactory.CreateScope())
+            // Act
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            Action act = () => mediator.Send(command, It.IsAny<CancellationToken>()).GetAwaiter().GetResult();
+            var ex = Assert.Throws<CustomerException>(act);
+            var erroMsg = ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail);
+            Assert.Contains(erroMsg, ex.Description);
+        }
+
+        [Fact]
+        public void should_create_user()
+        {
+            using var scope = _scopeFactory.CreateScope();
+
+            // Arrange
+
+            var command = new CreateCustomerCommand
             {
-                // Act
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                Action act = () => mediator.Send(command, It.IsAny<CancellationToken>()).GetAwaiter().GetResult();
-                var ex = Assert.Throws<CustomerException>(act);
-                Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail), ex.Message);
-            }
-            ResetState().GetAwaiter().GetResult();
+                BankAccountNumber = "IR00000001",
+                DateOfBirth = DateTime.Now.AddYears(-32),
+                Email = "r.pouya.create@hotmail.com",
+                FirstName = "Reza-create",
+                LastName = "Pouya-create",
+                PhoneNumber = "+989383810430"
+            };
+
+            // Act
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            mediator.Send(command).GetAwaiter().GetResult();
+
+            // Assert
+            var customer = GetCustomer(command.Email, scope);
+
+            Assert.NotNull(customer);
         }
 
         private static Customer? GetCustomer(string email, IServiceScope scope)
@@ -85,6 +79,11 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
                 .Customers
                 .AsNoTracking()
                 .FirstOrDefault(p => p.Email.Equals(email.SanitizeToLower()));
+        }
+
+        public void Dispose()
+        {
+            ResetState().GetAwaiter().GetResult();
         }
     }
 }

@@ -14,24 +14,19 @@
         }
 
         public string Code { get; set; }
-        public new string Message { get; set; }
-
-        public void SetMessage(string code, string message)
-        {
-            this.Code = code;
-            this.Message = message;
-        }
-
-        public void SetErrorCode(string code)
-        {
-            this.Code = code;
-            this.Message = ErrorMessages.GetMessage(code);
-        }
+        public string Description { get; set; }
 
         public BusinessException WithErrorCode(string code)
         {
             this.Code = code;
-            this.Message = ErrorMessages.GetMessage(code);
+            this.Description = ErrorMessages.GetMessage(code);
+            return this;
+        }
+
+        public BusinessException WithErrorCode(string code , string desc)
+        {
+            this.Code = code;
+            this.Description = desc;
             return this;
         }
     }

@@ -4,6 +4,8 @@ using Mc2.CrudTest.Domain.DataAccess;
 using Mc2.CrudTest.Domain.Manager.Customers;
 using Mc2.CrudTest.Domain.Manager.Tests.DataFixtures;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Linq;
 using System.Threading;
@@ -21,7 +23,8 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
         {
             _dbContext = fixture._applicationDbContext;
             _mediator = fixture._meidator;
-            _manager = new CustomerManager(_dbContext, _mediator);
+            var ilogger = new Mock<ILogger<CustomerManager>>();
+            _manager = new CustomerManager(_dbContext, _mediator, ilogger.Object);
         }
 
         [Fact]
@@ -43,7 +46,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
 
             // assert
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("There is a customer with same email.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail), ex.Description);
         }
 
         [Fact]
@@ -65,7 +68,7 @@ namespace Mc2.CrudTest.Domain.Manager.Tests
 
             // assert
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("There is a customer with same personal info.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateCustomerInfo), ex.Description);
         }
 
         [Fact]

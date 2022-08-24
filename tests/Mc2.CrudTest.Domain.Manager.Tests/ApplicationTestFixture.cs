@@ -3,6 +3,7 @@ using Mc2.CrudTest.Domain.Customers.ValueObjects;
 using Mc2.CrudTest.Domain.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 
@@ -46,7 +47,8 @@ namespace Mc2.CrudTest.Domain.Manager.Tests.DataFixtures
                 .Options;
 
             _meidator = new Mock<IMediator>().Object;
-            _applicationDbContext = new ApplicationDbContext(dbContextOptions , _meidator);
+            var logger = new Mock<ILogger<ApplicationDbContext>>().Object;
+            _applicationDbContext = new ApplicationDbContext(dbContextOptions , _meidator , logger);
         }
 
         public void Dispose()
