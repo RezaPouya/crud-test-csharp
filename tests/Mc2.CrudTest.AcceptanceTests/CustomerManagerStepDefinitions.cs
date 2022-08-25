@@ -10,12 +10,13 @@ namespace Mc2.CrudTest.AcceptanceTests
     [Binding]
     public class CustomerManagerStepDefinitions
     {
-        private readonly WebClient _webClient;
+        private readonly CustomerWebClientAgent _webClient;
         private readonly CustomerInputRequest _customerInputRequest;
+        private CustomerInputRequest _invalidCellphoneInputRequest;
         private readonly ScenarioContext _scenarioContext;
         private IEnumerable<BusinessError> _businessErrors = new List<BusinessError>();
 
-        public CustomerManagerStepDefinitions(WebClient webClient, ScenarioContext scenarioContext)
+        public CustomerManagerStepDefinitions(CustomerWebClientAgent webClient, ScenarioContext scenarioContext)
         {
             _webClient = webClient;
             _scenarioContext = scenarioContext;
@@ -106,6 +107,25 @@ namespace Mc2.CrudTest.AcceptanceTests
             customer.Should().NotBeNull();
             var response = await _webClient.DeleteCustomer(customer.Id);
             response.Should().BeTrue();
+        }
+
+        [Given(@"we have a customer with these info")]
+        public void GivenWeHaveACustomerWithTheseInfo(Table table)
+        {
+            _invalidCellphoneInputRequest = table.CreateSet<CustomerInputRequest>().FirstOrDefault();
+        }
+
+        [Then(@"when we try to create customer, it should fail")]
+        public async Task ThenWhenWeTryToCreateCustomerItShouldFail()
+        {
+            var response = await _webClient.CreateCustomer(_customerInputRequest);
+            response.Should().BeTrue();
+        }
+
+        [Then(@"error message should be ""([^""]*)""")]
+        public void ThenErrorMessageShouldBe(string errorMessage)
+        {
+            throw new PendingStepException();
         }
 
         public byte ToNumber(string count)

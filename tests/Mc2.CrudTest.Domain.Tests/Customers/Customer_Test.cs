@@ -60,7 +60,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         {
             Action act = () => CustomerMoq.GetDefaultCustomer("");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The customer email cannot be empty.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidEmail), ex.Description);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
             var str = StringGeneratorHelper.GenerateRandom(255);
             Action act = () => CustomerMoq.GetDefaultCustomer(str, "IR");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The email is too long and not valid.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidEmail), ex.Description);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         {
             Action act = () => CustomerMoq.GetDefaultCustomer("asdfasdfadf.asdfasdf", "IR");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The customer email is not valid.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidEmail), ex.Description);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
         {
             Action act = () => CustomerMoq.GetDefaultCustomer("rpouya@hotmail.com");
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The customer bank account number cannot be empty.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber), ex.Description);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Mc2.CrudTest.Domain.Tests.Customers
             var str = StringGeneratorHelper.GenerateRandom(36);
             Action act = () => CustomerMoq.GetDefaultCustomer("rpouya@hotmail.com", str);
             var ex = Assert.Throws<CustomerException>(act);
-            Assert.Contains("The bank account number is too long and not valid.", ex.Message);
+            Assert.Contains(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber), ex.Description);
         }
 
         [Fact]

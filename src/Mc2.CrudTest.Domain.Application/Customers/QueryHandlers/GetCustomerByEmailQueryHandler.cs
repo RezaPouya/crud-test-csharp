@@ -34,4 +34,34 @@ namespace Mc2.CrudTest.Domain.Application.Customers.QueryHandlers
                 }).FirstOrDefaultAsync(cancellationToken);
         }
     }
+
+
+    public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, CustomerOutputDto>
+    {
+        private readonly ApplicationDbContext _dbContext;
+
+        public GetCustomerByIdQueryHandler(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<CustomerOutputDto> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
+        {
+            if (request is null)
+                return null;
+
+            return await _dbContext.Customers.AsNoTracking()
+                .Where(p => p.Id == request.Id)
+                .Select(p => new CustomerOutputDto
+                 {
+                     Id = p.Id,
+                     BankAccountNumber = p.BankAccountNumber,
+                     DateOfBirth = p.PersonalInfo.DateOfBirth,
+                     Email = p.Email,
+                     FirstName = p.PersonalInfo.FirstName,
+                     LastName = p.PersonalInfo.LastName,
+                     PhoneNumber = p.PhoneNumber.Number
+                 }).FirstOrDefaultAsync(cancellationToken);
+        }
+    }
 }

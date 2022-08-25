@@ -4,11 +4,11 @@ using System.Net.Http.Json;
 
 namespace Mc2.CrudTest.AcceptanceTests.Drivers
 {
-    public class WebClient
+    public class CustomerWebClientAgent
     {
         protected readonly HttpClient _httpClient;
 
-        public WebClient(HttpClient httpClient)
+        public CustomerWebClientAgent(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }

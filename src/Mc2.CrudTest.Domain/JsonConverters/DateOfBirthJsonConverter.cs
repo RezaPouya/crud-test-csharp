@@ -19,7 +19,7 @@ namespace Mc2.CrudTest.Domain.JsonConverters
         public DateTime ConvertToDateTime(string? dateTime)
         {
             if (string.IsNullOrEmpty(dateTime))
-                throw new ArgumentException("Date of birth cannot be null or empty ");
+                return default;
 
             //return DateTime.ParseExact(dateTime, "dd-MMM-yyyy", CultureInfo.InvariantCulture);
             return Convert.ToDateTime(dateTime?.ToUpper());

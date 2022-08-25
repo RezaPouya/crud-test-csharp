@@ -40,13 +40,13 @@ namespace Mc2.CrudTest.Domain.Customers
             email = email?.ToLower().Trim() ?? string.Empty;
 
             if (string.IsNullOrEmpty(email))
-                throw new CustomerException("The customer email cannot be empty.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidEmail);
 
             if (email.Length > 254)
-                throw new CustomerException("The email is too long and not valid.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidEmail);
 
             if (EmailHelper.IsValidEmail(email) == false)
-                throw new CustomerException("The customer email is not valid.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidEmail);
 
             this.Email = email;
         }
@@ -65,10 +65,10 @@ namespace Mc2.CrudTest.Domain.Customers
             bankAccountNumber = bankAccountNumber?.ToLower()?.Trim() ?? string.Empty;
 
             if (string.IsNullOrEmpty(bankAccountNumber))
-                throw new CustomerException("The customer bank account number cannot be empty.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber); 
 
             if (bankAccountNumber.Length > 34)
-                throw new CustomerException("The bank account number is too long and not valid.");
+                throw new CustomerException().WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber);
 
             this.BankAccountNumber = bankAccountNumber;
         }

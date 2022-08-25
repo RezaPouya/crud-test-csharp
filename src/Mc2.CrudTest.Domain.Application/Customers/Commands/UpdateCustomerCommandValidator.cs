@@ -15,12 +15,22 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
                 .NotEmpty()
                 .MaximumLength(254)
                 .Must(email => EmailHelper.IsValidEmail(email))
-                .WithMessage("Email is not valid.");
+                .WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidEmail)
+                .WithMessage(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidEmail));
 
             RuleFor(p => p.BankAccountNumber)
                 .NotEmpty()
                 .MaximumLength(34)
-                .WithMessage("Bank account number is not valid.");
+                .WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber)
+                .WithMessage(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidBankAccountNumber));
+
+
+            RuleFor(v => v.PhoneNumber)
+                .NotEmpty()
+                .MaximumLength(31)
+                .Must(email => PhoneNumberHelper.IsValidCellphoneNumber(email))
+                .WithErrorCode(ErrorCodes.CustomerErrorCodes.InvalidMobileNumber)
+                .WithMessage(ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.InvalidMobileNumber));
 
             RuleFor(p => p.DateOfBirth)
                 .NotNull()
@@ -37,18 +47,6 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
                 .MinimumLength(2)
                 .MaximumLength(64)
                 .WithMessage("Last name is not valid.");
-
-            RuleFor(v => v.LastName)
-                .NotEmpty()
-                .MinimumLength(2)
-                .MaximumLength(64)
-                .WithMessage("Last name is not valid.");
-
-            RuleFor(v => v.PhoneNumber)
-                .NotEmpty()
-                .MaximumLength(31)
-                .Must(email => PhoneNumberHelper.IsValidCellphoneNumber(email))
-                .WithMessage("You should enter valid phone number.");
         }
     }
 }

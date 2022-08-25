@@ -32,3 +32,12 @@ Feature: Customer Manager
         Examples:
           | ID | FirstName | LastName | Email        | PhoneNumber   | DateOfBirth | BankAccountNumber |
           | 1  | John      | Doe      | john@doe.com | +989121234567 | 01-JAN-2000 | IR000000000000001 |
+
+	Scenario: Validate Phone number on Create 
+		Given  we have a customer with these info 
+			| FirstName | LastName | Email          | PhoneNumber   | DateOfBirth | BankAccountNumber |
+			| John      | Smith    | john@smith.com | +934567	    | 01-JAN-1988 | IR000000000000001 |
+		Then when we try to create customer, it should fail 
+			And error message should be "Invalid Mobile Number"
+
+			

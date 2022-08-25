@@ -1,12 +1,16 @@
 ﻿using Mc2.CrudTest.Domain.Application.Customers.Commands;
 using Mc2.CrudTest.Domain.Application.Customers.Queries;
 using Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos;
+using Mc2.CrudTest.HttpApi.Host.Filters;
+using Mc2.CrudTest.HttpApi.Host.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mc2.CrudTest.HttpApi.Host.Controllers
 {
     [ApiController]
+    //[ApiExceptionFilter]
+    //[ApiResultFilter]
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
@@ -20,14 +24,14 @@ namespace Mc2.CrudTest.HttpApi.Host.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCustomerCommand command, CancellationToken cancellationToken)
+        public async Task<ApiResult> Create(CreateCustomerCommand command, CancellationToken cancellationToken)
         {
             await _mediator.Send(command, cancellationToken);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateCustomerCommand command, CancellationToken cancellationToken)
+        public async Task<ApiResult> Update(int id, UpdateCustomerCommand command, CancellationToken cancellationToken)
         {
             if (id != command.Id)
                 return BadRequest();

@@ -33,7 +33,7 @@ public sealed class ManageCustomerHooks
 
         _objectContainer.RegisterInstanceAs(httpClient);
 
-        var webClientDriver = new WebClient(httpClient);
+        var webClientDriver = new CustomerWebClientAgent(httpClient);
 
         _objectContainer.RegisterInstanceAs(webClientDriver);
     }
