@@ -127,14 +127,19 @@ namespace Mc2.CrudTest.AcceptanceTests
         [Then(@"when we try to create customer, it should fail")]
         public async Task ThenWhenWeTryToCreateCustomerItShouldFail()
         {
-            //var response = await _webClient.CreateCustomer(_customerInputRequest);
-            //response.Should().BeTrue();
+            var response = await _webClient.CreateCustomer(_invalidCellphoneInputRequest);
+            response.Should().NotBeNull();
+            _scenarioContext.Set<ApiResult>(response, "invalidCellphoneRequest_Response");
         }
 
         [Then(@"error message should be ""([^""]*)""")]
         public void ThenErrorMessageShouldBe(string errorMessage)
         {
-            //throw new PendingStepException();
+            var response = (ApiResult)_scenarioContext["invalidCellphoneRequest_Response"];
+            response.Should().NotBeNull();
+            response.IsSuccess.Should().BeFalse();
+            response.Errors.Should().HaveCountGreaterThan(0);
+            response.Errors.ContainsValue(errorMessage);
         }
 
         private async Task<List<CustomerOutputResponse>> GetAllCustomerAndFilterSpecifiedCustomerFromApis(string email)
