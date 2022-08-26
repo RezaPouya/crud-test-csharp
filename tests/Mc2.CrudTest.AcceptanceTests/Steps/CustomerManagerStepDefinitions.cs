@@ -4,14 +4,13 @@ using Mc2.CrudTest.AcceptanceTests.Models;
 using Mc2.CrudTest.AcceptanceTests.Models.DTOs;
 using TechTalk.SpecFlow.Assist;
 
-
 namespace Mc2.CrudTest.AcceptanceTests
 {
     [Binding]
     public class CustomerManagerStepDefinitions
     {
         private readonly CustomerWebClientAgent _webClient;
-        private readonly CustomerInputRequest _customerInputRequest;
+        private CustomerInputRequest _customerInputRequest;
         private CustomerInputRequest _invalidCellphoneInputRequest;
         private readonly ScenarioContext _scenarioContext;
         private IEnumerable<BusinessError> _businessErrors = new List<BusinessError>();
@@ -20,7 +19,6 @@ namespace Mc2.CrudTest.AcceptanceTests
         {
             _webClient = webClient;
             _scenarioContext = scenarioContext;
-            _customerInputRequest = new CustomerInputRequest();
         }
 
         [Given(@"system error codes are following")]
@@ -29,9 +27,20 @@ namespace Mc2.CrudTest.AcceptanceTests
             _businessErrors = table.CreateSet<BusinessError>();
         }
 
+        [Given(@"there is initial customer with these info")]
+        public async Task GivenThereIsInitialCustomerWithTheseInfo(Table table)
+        {
+            var req = table.CreateSet<CustomerInputRequest>().FirstOrDefault();
+            await _webClient.CreateCustomer(req);
+            var getResponse = await _webClient.GetCustomerCustomerByEmail(req.Email);
+            getResponse.Should().NotBeNull();
+            _scenarioContext.Set<ApiResult<CustomerOutputResponse>>(getResponse , "initial_customer");
+        }
+
         [Given(@"we have a customer with Firstname of (.*)")]
         public void GivenWeHaveACustomerWithFirstname(string firstName)
         {
+            _customerInputRequest = new CustomerInputRequest();
             _customerInputRequest.FirstName = firstName;
         }
 
@@ -77,13 +86,11 @@ namespace Mc2.CrudTest.AcceptanceTests
         [Then(@"user can lookup all customers and filter by Email of john@doe\.com and get ""([^""]*)"" records")]
         public async Task ThenUserCanLookupAllCustomersAndFilterByEmailOfJohnDoe_ComAndGetRecords(string count)
         {
-            List<CustomerOutputResponse> specifiedCustomers = 
+            List<CustomerOutputResponse> specifiedCustomers =
                 await GetAllCustomerAndFilterSpecifiedCustomerFromApis("john@doe.com");
             var countOfExceptedRecord = ToNumber(count);
             specifiedCustomers.Should().HaveCount(countOfExceptedRecord);
         }
-
-       
 
         [When(@"user edit customer with new email of ""([^""]*)""")]
         public async Task WhenUserEditCustomerWithNewEmailOf(string email)
@@ -118,7 +125,7 @@ namespace Mc2.CrudTest.AcceptanceTests
             response.IsSuccess.Should().BeTrue();
         }
 
-        [Given(@"we have a customer with these info")]
+        [Given(@"user have a customer with these info")]
         public void GivenWeHaveACustomerWithTheseInfo(Table table)
         {
             _invalidCellphoneInputRequest = table.CreateSet<CustomerInputRequest>().FirstOrDefault();
@@ -129,20 +136,66 @@ namespace Mc2.CrudTest.AcceptanceTests
         {
             var response = await _webClient.CreateCustomer(_invalidCellphoneInputRequest);
             response.Should().NotBeNull();
-            _scenarioContext.Set<ApiResult>(response, "invalidCellphoneRequest_Response");
+            _scenarioContext.Set<ApiResult>(response, "invalidCellphone_Create_Request_Response");
         }
 
         [Then(@"error message should be ""([^""]*)""")]
         public void ThenErrorMessageShouldBe(string errorMessage)
         {
-            var response = (ApiResult)_scenarioContext["invalidCellphoneRequest_Response"];
+            var response = (ApiResult)_scenarioContext["invalidCellphone_Create_Request_Response"];
             response.Should().NotBeNull();
             response.IsSuccess.Should().BeFalse();
             response.Errors.Should().HaveCountGreaterThan(0);
             response.Errors.ContainsValue(errorMessage);
         }
 
-        private async Task<List<CustomerOutputResponse>> GetAllCustomerAndFilterSpecifiedCustomerFromApis(string email)
+        [When(@"user try to update Foo Bar customer, with Invalid Phone number of ""([^""]*)""")]
+        public async Task WhenUserTryToUpdateFooBarCustomerWithInvalidPhoneNumberOf(string phoneNumber)
+        {
+            var fooBarCustomer = (ApiResult<CustomerOutputResponse>)_scenarioContext["initial_customer"];
+            fooBarCustomer.Should().NotBeNull();
+            fooBarCustomer.Data.Should().NotBeNull();
+            var req = new CustomerInputRequest(fooBarCustomer.Data);
+            req.PhoneNumber = phoneNumber;
+            var response = await _webClient.UpdateCustomer(req);
+            response.Should().NotBeNull();
+            _scenarioContext.Set<ApiResult>(response, "invalidCellphone_Update_Request_Response");
+        }
+
+        [Then(@"the thrown error message on update should be ""([^""]*)""")]
+        public void ThenTheThrownErrorMessageOnUpdateShouldBe(string errorMessage)
+        {
+            var response = (ApiResult)_scenarioContext["invalidCellphone_Update_Request_Response"];
+            response.Should().NotBeNull();
+            response.IsSuccess.Should().BeFalse();
+            response.Errors.Should().HaveCountGreaterThan(0);
+            response.Errors.ContainsValue(errorMessage);
+        }
+
+        [When(@"user try to create duplicated customer with these info")]
+        public async Task WhenUserTryToCreateDuplicatedCustomerWithTheseInfo(Table table)
+        {
+            var req = table.CreateSet<CustomerInputRequest>().FirstOrDefault();
+            var response = await _webClient.CreateCustomer(req);
+            response.Should().NotBeNull();
+            _scenarioContext.Set<ApiResult>(response, "duplicated_customer_info_request_response");
+        }
+
+        [Then(@"customer duplicated error message should be ""([^""]*)""")]
+        public async Task ThenCustomerDuplicatedErrorMessageShouldBe(string errorMessage)
+        {
+            var response = (ApiResult)_scenarioContext["duplicated_customer_info_request_response"];
+            response.Should().NotBeNull();
+            response.IsSuccess.Should().BeFalse();
+            response.Message.Equals(errorMessage);
+        }
+
+        public byte ToNumber(string count)
+        {
+            return Convert.ToByte(count);
+        }
+
+        public async Task<List<CustomerOutputResponse>> GetAllCustomerAndFilterSpecifiedCustomerFromApis(string email)
         {
             var apiResult = await _webClient.GetAllCustomer();
             apiResult.Should().NotBeNull();
@@ -150,11 +203,6 @@ namespace Mc2.CrudTest.AcceptanceTests
             apiResult.Data.Should().NotBeNull();
             var specifiedCustomer = apiResult.Data.Where(p => p.Email.Equals(email)).ToList();
             return specifiedCustomer;
-        }
-
-        public byte ToNumber(string count)
-        {
-            return Convert.ToByte(count);
         }
     }
 }

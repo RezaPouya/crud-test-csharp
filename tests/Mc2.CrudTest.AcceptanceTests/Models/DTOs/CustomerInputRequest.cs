@@ -20,6 +20,7 @@ namespace Mc2.CrudTest.AcceptanceTests.Models.DTOs
             this.Email = model.Email;
             this.BankAccountNumber = model.BankAccountNumber;
         }
+
         [Key]
         public int Id { get; set; }
         public string Email { get; set; }
