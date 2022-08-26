@@ -1,3 +1,4 @@
+using Mc2.CrudTest.AcceptanceTests.Models;
 using Mc2.CrudTest.AcceptanceTests.Models.DTOs;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
@@ -13,45 +14,36 @@ namespace Mc2.CrudTest.AcceptanceTests.Drivers
             _httpClient = httpClient;
         }
 
-        public async Task<bool> CreateCustomer(CustomerInputRequest request)
+        public async Task<ApiResult<CustomerOutputResponse>> CreateCustomer(CustomerInputRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("/api/Customer", request);
-
-            if (response.IsSuccessStatusCode)
-                return true;
-
-            return false;
+            return await GetResponseFromContent<ApiResult<CustomerOutputResponse>>(response);
         }
 
-        public async Task<bool> UpdateCustomer(CustomerInputRequest request)
+        public async Task<ApiResult<CustomerOutputResponse>> UpdateCustomer(CustomerInputRequest request)
         {
             var response = await _httpClient.PutAsJsonAsync($"/api/Customer/{request.Id}", request);
 
-            if (response.IsSuccessStatusCode)
-                return true;
-
-            return false;
+            return await GetResponseFromContent<ApiResult<CustomerOutputResponse>>(response);
         }
 
-        public async Task<bool> DeleteCustomer(int id)
+        public async Task<ApiResult<CustomerOutputResponse>> DeleteCustomer(int id)
         {
             var path = string.Format("/api/Customer/{0}", id);
+
             var response = await _httpClient.DeleteAsync(path);
 
-            if (response.IsSuccessStatusCode)
-                return true;
-
-            return false;
+            return await GetResponseFromContent<ApiResult<CustomerOutputResponse>>(response);
         }
 
-        public async Task<CustomerOutputResponse> GetCustomerCustomerByEmail(string email)
+        public async Task<ApiResult<CustomerOutputResponse>> GetCustomerCustomerByEmail(string email)
         {
-            return await _httpClient.GetFromJsonAsync<CustomerOutputResponse>($"/api/Customer/email/{email}");
+            return await _httpClient.GetFromJsonAsync<ApiResult<CustomerOutputResponse>>($"/api/Customer/email/{email}");
         }
 
-        public async Task<IEnumerable<CustomerOutputResponse>> GetAllCustomer()
+        public async Task<ApiResult<IEnumerable<CustomerOutputResponse>>> GetAllCustomer()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<CustomerOutputResponse>>($"/api/Customer/All");
+            return await _httpClient.GetFromJsonAsync<ApiResult<IEnumerable<CustomerOutputResponse>>>($"/api/Customer/All");
         }
 
         private static async Task<T> GetResponseFromContent<T>(HttpResponseMessage response) where T : class

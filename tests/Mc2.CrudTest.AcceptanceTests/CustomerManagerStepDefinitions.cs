@@ -69,35 +69,41 @@ namespace Mc2.CrudTest.AcceptanceTests
         public async Task WhenUserCreateCustomerWithGivenInfo()
         {
             var response = await _webClient.CreateCustomer(_customerInputRequest);
-            response.Should().BeTrue();
+            response.Should().NotBeNull();
+            response.StatusCode.Equals(200);
+            response.IsSuccess.Should().BeTrue();
         }
 
         [Then(@"user can lookup all customers and filter by Email of john@doe\.com and get ""([^""]*)"" records")]
         public async Task ThenUserCanLookupAllCustomersAndFilterByEmailOfJohnDoe_ComAndGetRecords(string count)
         {
-            var customers = await _webClient.GetAllCustomer();
-            var customerWithJhoneDoeEmails = customers.Where(p => p.Email.Equals("john@doe.com")).ToList();
+            List<CustomerOutputResponse> specifiedCustomers = 
+                await GetAllCustomerAndFilterSpecifiedCustomerFromApis("john@doe.com");
             var countOfExceptedRecord = ToNumber(count);
-            customerWithJhoneDoeEmails.Should().HaveCount(countOfExceptedRecord);
+            specifiedCustomers.Should().HaveCount(countOfExceptedRecord);
         }
+
+       
 
         [When(@"user edit customer with new email of ""([^""]*)""")]
         public async Task WhenUserEditCustomerWithNewEmailOf(string email)
         {
             var customer = await _webClient.GetCustomerCustomerByEmail("john@doe.com");
             customer.Should().NotBeNull();
-            customer.Email = email;
-            var response = await _webClient.UpdateCustomer(new CustomerInputRequest(customer));
-            response.Should().BeTrue();
+            customer.Data.Should().NotBeNull();
+            customer.Data.Email = email;
+            var response = await _webClient.UpdateCustomer(new CustomerInputRequest(customer.Data));
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be("200");
+            response.IsSuccess.Should().BeTrue();
         }
 
         [Then(@"user can lookup all customers and filter by Email of ""([^""]*)"" and get ""([^""]*)"" records")]
         public async Task ThenUserCanLookupAllCustomersAndFilterByEmailOfAndGetRecords(string email, string count)
         {
-            var customers = await _webClient.GetAllCustomer();
-            var customerWithJhoneDoeEmails = customers.Where(p => p.Email.Equals(email)).ToList();
+            var specifiedCustomers = await GetAllCustomerAndFilterSpecifiedCustomerFromApis(email);
             var countOfExceptedRecord = ToNumber(count);
-            customerWithJhoneDoeEmails.Should().HaveCount(countOfExceptedRecord);
+            specifiedCustomers.Should().HaveCount(countOfExceptedRecord);
         }
 
         [When(@"user delete customer by Email of ""([^""]*)""")]
@@ -105,8 +111,11 @@ namespace Mc2.CrudTest.AcceptanceTests
         {
             var customer = await _webClient.GetCustomerCustomerByEmail(email);
             customer.Should().NotBeNull();
-            var response = await _webClient.DeleteCustomer(customer.Id);
-            response.Should().BeTrue();
+            customer.Data.Should().NotBeNull();
+            var response = await _webClient.DeleteCustomer(customer.Data.Id);
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be("200");
+            response.IsSuccess.Should().BeTrue();
         }
 
         [Given(@"we have a customer with these info")]
@@ -118,14 +127,24 @@ namespace Mc2.CrudTest.AcceptanceTests
         [Then(@"when we try to create customer, it should fail")]
         public async Task ThenWhenWeTryToCreateCustomerItShouldFail()
         {
-            var response = await _webClient.CreateCustomer(_customerInputRequest);
-            response.Should().BeTrue();
+            //var response = await _webClient.CreateCustomer(_customerInputRequest);
+            //response.Should().BeTrue();
         }
 
         [Then(@"error message should be ""([^""]*)""")]
         public void ThenErrorMessageShouldBe(string errorMessage)
         {
-            throw new PendingStepException();
+            //throw new PendingStepException();
+        }
+
+        private async Task<List<CustomerOutputResponse>> GetAllCustomerAndFilterSpecifiedCustomerFromApis(string email)
+        {
+            var apiResult = await _webClient.GetAllCustomer();
+            apiResult.Should().NotBeNull();
+            apiResult.IsSuccess.Should().BeTrue();
+            apiResult.Data.Should().NotBeNull();
+            var specifiedCustomer = apiResult.Data.Where(p => p.Email.Equals(email)).ToList();
+            return specifiedCustomer;
         }
 
         public byte ToNumber(string count)

@@ -4,7 +4,10 @@
     public  class ApiResult
     {
         public bool IsSuccess { get; set; }
-        public int Code { get; set; }
+        public string StatusCode { get; set; }
+
+        public string? ErrorCode { get; set; }
+
         public string? Message { get; set; }
     }
 

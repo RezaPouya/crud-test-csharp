@@ -105,8 +105,9 @@ namespace Mc2.CrudTest.HttpApi.Host.Filters
 
         private void OkObjectResult(ResultExecutingContext context, ObjectResult okObjectResult)
         {
+            var apiResult = new ApiResult<object>(okObjectResult.Value);
             context.Result =
-                new JsonResult(new ApiResult<object>(okObjectResult.Value)) { StatusCode = okObjectResult.StatusCode };
+                new JsonResult(apiResult) { StatusCode = okObjectResult.StatusCode };
         }
 
         private static void BadRequestResult(ResultExecutingContext context, BadRequestResult badRequestResult)

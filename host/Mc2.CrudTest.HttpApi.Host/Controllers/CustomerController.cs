@@ -53,7 +53,8 @@ namespace Mc2.CrudTest.HttpApi.Host.Controllers
             if (string.IsNullOrEmpty(email))
                 return null;
 
-            return await _mediator.Send(new GetCustomerByEmailQuery(email), cancellationToken);
+            var response =  await _mediator.Send(new GetCustomerByEmailQuery(email), cancellationToken);
+            return response;
         }
 
         [HttpGet("id/{id}")]
