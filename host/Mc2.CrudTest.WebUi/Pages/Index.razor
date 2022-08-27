@@ -1,0 +1,81 @@
+﻿@using Mc2.CrudTest.Domain.Application.Customers.Queries
+@using Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos
+@page "/"
+@page "/index"
+@page "/home"
+@page "/Customer/Index"
+@page "/Customers"
+@inject IMediator _sender
+@inject NavigationManager _navigationManager
+
+<PageTitle>Customers</PageTitle>
+
+<h2>Customers</h2>
+<br/>
+
+@if (_customers == null)
+{
+    <p><em>Loading Customers...</em></p>
+}
+else
+{
+
+    if (_customers.Count() == 0)
+    {
+        <div class="alert alert-info">
+            There is no registered customer, you can regsiter them from here 
+            <NavLink class="btn btn-link" href="customers/create">Create</NavLink>
+        </div>
+    }
+    else
+    {
+        <NavLink class="btn btn-sm btn-primary" href="customers/create">Create</NavLink>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Bank Account Number</th>
+                    <th>Date Of Birth</th>
+                    <th>Phone Number</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var customer in _customers)
+                {
+                    <tr>
+                        <td>@customer.Id</td>
+                        <td>@customer.FirstName</td>
+                        <td>@customer.LastName</td>
+                        <td>@customer.Email</td>
+                        <td>@customer.BankAccountNumber</td>
+                        <td>@customer.DateOfBirth</td>
+                        <td>@customer.PhoneNumber</td>
+                        <td>
+                            <NavLink class="btn btn-sm btn-warning" href="@($"customer/edit/{customer.Id}")">Edit</NavLink>
+                            <NavLink class="btn btn-sm btn-danger" @onclick="() => DeleteCustomer(customer.Id)">Delete</NavLink>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private IEnumerable<CustomerOutputDto> _customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _customers = await _sender.Send(new GetAllCustomersQuery());
+    }
+
+    protected async Task DeleteCustomer(int cutsomerId)
+    {
+        _navigationManager.NavigateTo("/");
+    }
+}
