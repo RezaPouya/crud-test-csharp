@@ -54,4 +54,11 @@ Feature: Customer Manager
 			| FirstName | LastName | Email		       | PhoneNumber       | DateOfBirth | BankAccountNumber |
 			| Foo       | Bar      | newbar@foo.com    | +989121234567	    | 01-JAN-1988 | IR000000000000002 |
 		Then customer duplicated error message should be "Duplicate customer by First-name, Last-name, Date-of-Birth"
+
+
+	Scenario: email must be unique in database
+		When user try to create duplicated customer with duplicated email and these info 
+			| FirstName | LastName   | Email		       | PhoneNumber        | DateOfBirth | BankAccountNumber |
+			| Foo2       | Bar2      | foo@bar.com         | +989121234567	    | 01-JAN-1988 | IR000000000000003 |
+		Then customer email duplicated error message should be "Duplicate customer by Email address"
 			

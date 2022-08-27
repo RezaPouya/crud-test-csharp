@@ -190,6 +190,24 @@ namespace Mc2.CrudTest.AcceptanceTests
             response.Message.Equals(errorMessage);
         }
 
+
+        [When(@"user try to create duplicated customer with duplicated email and these info")]
+        public async Task WhenUserTryToCreateDuplicatedCustomerWithDuplicatedEmailAndTheseInfo(Table table)
+        {
+            var req = table.CreateSet<CustomerInputRequest>().FirstOrDefault();
+            var response = await _webClient.CreateCustomer(req);
+            response.Should().NotBeNull();
+            _scenarioContext.Set<ApiResult>(response, "duplicated_customer_email_info_request_response");
+        }
+
+        [Then(@"customer email duplicated error message should be ""([^""]*)""")]
+        public void ThenCustomerEmailDuplicatedErrorMessageShouldBe(string errorMessage)
+        {
+            var response = (ApiResult)_scenarioContext["duplicated_customer_email_info_request_response"];
+            response.Should().NotBeNull();
+            response.IsSuccess.Should().BeFalse();
+            response.Message.Equals(errorMessage);
+        }
         public byte ToNumber(string count)
         {
             return Convert.ToByte(count);
