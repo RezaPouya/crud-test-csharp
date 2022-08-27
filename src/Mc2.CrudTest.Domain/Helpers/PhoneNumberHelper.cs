@@ -11,6 +11,9 @@ namespace Mc2.CrudTest.Domain.Helpers
         {
             try
             {
+                if (string.IsNullOrEmpty(phoneNumber))
+                    return false;
+
                 PhoneNumber phone = PhoneNumberUtil.Parse(phoneNumber.ToLower().Trim(),
                     CountryCodeSource.UNSPECIFIED.ToString());
 

@@ -22,29 +22,6 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
         }
 
         [Fact]
-        public void should_throw_exception_if_want_to_insert_duplicate_email()
-        {
-            using var scope = _scopeFactory.CreateScope();
-
-            var command = new CreateCustomerCommand
-            {
-                BankAccountNumber = "IR000",
-                DateOfBirth = System.DateTime.Now.AddYears(-32),
-                Email = TestCustomers.customer_1.Email,
-                FirstName = "Reza",
-                LastName = "Pouya",
-                PhoneNumber = "+989383810430"
-            };
-
-            // Act
-            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-            Action act = () => mediator.Send(command, It.IsAny<CancellationToken>()).GetAwaiter().GetResult();
-            var ex = Assert.Throws<CustomerException>(act);
-            var erroMsg = ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail);
-            Assert.Contains(erroMsg, ex.Description);
-        }
-
-        [Fact]
         public void should_create_user()
         {
             using var scope = _scopeFactory.CreateScope();
@@ -66,19 +43,37 @@ namespace Mc2.CrudTest.Domain.Application.Tests.Commands
             mediator.Send(command).GetAwaiter().GetResult();
 
             // Assert
-            var customer = GetCustomer(command.Email, scope);
+            var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var customer = applicationDbContext
+                .Customers
+                .AsNoTracking()
+                .FirstOrDefault(p => p.Email.Equals(command.Email.SanitizeToLower()));
 
             Assert.NotNull(customer);
         }
 
-        private static Customer? GetCustomer(string email, IServiceScope scope)
+        [Fact]
+        public void should_throw_exception_if_want_to_insert_duplicate_email()
         {
-            var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            using var scope = _scopeFactory.CreateScope();
 
-            return applicationDbContext
-                .Customers
-                .AsNoTracking()
-                .FirstOrDefault(p => p.Email.Equals(email.SanitizeToLower()));
+            var command = new CreateCustomerCommand
+            {
+                BankAccountNumber = "IR000",
+                DateOfBirth = System.DateTime.Now.AddYears(-32),
+                Email = TestCustomers.customer_1.Email,
+                FirstName = "Reza",
+                LastName = "Pouya",
+                PhoneNumber = "+989383810430"
+            };
+
+            // Act
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+            Action act = () => mediator.Send(command, It.IsAny<CancellationToken>()).GetAwaiter().GetResult();
+            var ex = Assert.Throws<CustomerException>(act);
+            var erroMsg = ErrorMessages.GetMessage(ErrorCodes.CustomerErrorCodes.DuplicateEmail);
+            Assert.Contains(erroMsg, ex.Description);
         }
 
         public void Dispose()

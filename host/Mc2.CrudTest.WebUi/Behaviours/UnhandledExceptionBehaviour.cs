@@ -22,7 +22,7 @@ namespace Mc2.CrudTest.WebUi.Behaviours
             {
                 var requestName = typeof(TRequest).Name;
 
-                _logger.LogError(ex, "Project1 Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
+                _logger.LogError(ex, "Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;
             }

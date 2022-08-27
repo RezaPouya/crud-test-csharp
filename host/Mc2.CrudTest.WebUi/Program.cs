@@ -1,5 +1,4 @@
 using Mc2.CrudTest.WebUi.Configurations;
-using Mc2.CrudTest.WebUi.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 

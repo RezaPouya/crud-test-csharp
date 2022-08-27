@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Mc2.CrudTest.Domain.Application;
+using Mc2.CrudTest.Domain.Application.Customers.Commands;
 using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.DataAccess;
 using Mc2.CrudTest.Domain.Manager.Customers;
@@ -31,17 +32,19 @@ namespace Mc2.CrudTest.WebUi.Configurations
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddMediatR(typeof(DomainApplicationAssemblyMarker).GetTypeInfo().Assembly);
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
-            builder.Services.AddControllers(
-                options =>
-                {
-                    options.Filters.Add<ApiExceptionFilterAttribute>();
-                    options.Filters.Add<ApiResultFilterAttribute>();
-                });
+            //builder.Services.AddControllers(
+            //    options =>
+            //    {
+            //        options.Filters.Add<ApiExceptionFilterAttribute>();
+            //        options.Filters.Add<ApiResultFilterAttribute>();
+            //    });
 
-            builder.Services.AddValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).Assembly);
+            //builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>());
+            //builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCustomerCommandValidator));
+            //builder.Services.AddValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).Assembly);
 
             builder.Services.AddCustomServices(configuration);
         }

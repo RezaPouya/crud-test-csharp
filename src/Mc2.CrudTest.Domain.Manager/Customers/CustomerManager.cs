@@ -14,6 +14,7 @@ namespace Mc2.CrudTest.Domain.Manager.Customers
         private readonly ApplicationDbContext _dbContext;
         private readonly IMediator _mediatR;
         private readonly ILogger<CustomerManager> _logger;
+        
 
         public CustomerManager(ApplicationDbContext dbContext, IMediator mediatR, ILogger<CustomerManager> logger)
         {
