@@ -7,13 +7,21 @@ function createQuestion(question) {
 }
 
 function setElementHtmlById(id, text) {
-    console.log('setElementTextById');
-    document.getElementById(id).innerHTML = text;
+    let element = document.getElementById(id);
+    if (element !== undefined && element !== null) {
+        document.getElementById(id).innerHTML = text;
+    }
+}
+
+function refreshPage() {
+    window.location.reload();
 }
 
 function setElementTextById(id, text) {
-    console.log('setElementTextById');
-    document.getElementById(id).innerText = text;
+    let element = document.getElementById(id);
+    if (element !== undefined && element !== null) {
+        document.getElementById(id).innerText = text;
+    }
 }
 
 function focusOnElement(element) {

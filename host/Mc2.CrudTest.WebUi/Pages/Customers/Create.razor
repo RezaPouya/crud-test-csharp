@@ -11,7 +11,7 @@
 
 <PageTitle>Create Customer</PageTitle>
 
-<h2>Customers</h2>
+<h2>Create Customer</h2>
 <hr />
 @*<div class="alert alert-danger"></div>*@
 
@@ -51,11 +51,11 @@
         <ValidationMessage For="@(() => createCommand.DateOfBirth )" />
     </p>
 
-    <div class="card">
+@*    <div class="card">
         <div class="card-body">
             <span id="resultJson"></span>
         </div>
-    </div>
+    </div>*@
 
     <hr />
     <button class="btn btn-primary" type="submit">Submit</button>
@@ -83,7 +83,7 @@
             if (validate.IsValid)
             {
                 var resuxlt = await _sender.Send(createCommand);
-                await NavigateToHome();
+                NavigateToHome();
             }
             else
             {
@@ -100,7 +100,7 @@
         }
     }
 
-    protected async Task NavigateToHome()
+    protected void NavigateToHome()
     {
         _navigationManager.NavigateTo("/");
     }

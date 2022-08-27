@@ -3,12 +3,15 @@
 @page "/home"
 @page "/Customer/Index"
 @page "/Customers"
+@using Mc2.CrudTest.Domain.Application.Customers.Commands
+@using Mc2.CrudTest.Domain.BaseEntities
+@using Mc2.CrudTest.WebUi.Helpers
 
 
 <PageTitle>Customers</PageTitle>
 
 <h2>Customers</h2>
-<br/>
+<br />
 
 @if (_customers == null)
 {
@@ -16,11 +19,10 @@
 }
 else
 {
-
     if (_customers.Count() == 0)
     {
         <div class="alert alert-info">
-            There is no registered customer, you can regsiter them from here 
+            There is no registered customer, you can regsiter them from here
             <NavLink class="btn btn-link" href="customers/create">Create</NavLink>
         </div>
     }
@@ -28,6 +30,7 @@ else
     {
         <NavLink id="create_customer_btn" class="btn btn-sm btn-primary" href="customers/create">Create</NavLink>
         <hr />
+        <div id="exceptions"></div>
         <table id="customer_table" class="table">
             <thead>
                 <tr>
@@ -73,6 +76,24 @@ else
 
     protected async Task DeleteCustomer(int cutsomerId)
     {
-        _navigationManager.NavigateTo("/");
+        if (cutsomerId == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            var result = await _sender.Send(new DeleteCustomerCommand(cutsomerId));
+        }
+        catch (BusinessException ex)
+        {
+            await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", ErrorHtmlHelper.CreateMessageFromBusinessException(ex));
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", ErrorHtmlHelper.CreateMessageFromException());
+        }
+
+        JsRuntime.InvokeVoidAsync("refreshPage").GetAwaiter().GetResult();
     }
 }

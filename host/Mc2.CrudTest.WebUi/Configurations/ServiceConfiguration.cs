@@ -1,15 +1,10 @@
-﻿using FluentValidation;
-using Mc2.CrudTest.Domain.Application;
-using Mc2.CrudTest.Domain.Application.Customers.Commands;
+﻿using Mc2.CrudTest.Domain.Application;
 using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.DataAccess;
 using Mc2.CrudTest.Domain.Manager.Customers;
-using Mc2.CrudTest.WebUi.Behaviours;
-using Mc2.CrudTest.WebUi.Filters;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-
 
 namespace Mc2.CrudTest.WebUi.Configurations
 {
@@ -28,23 +23,12 @@ namespace Mc2.CrudTest.WebUi.Configurations
 
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            // https://docs.microsoft.com/en-us/ef/core/dbcontext-configuration/#avoiding-dbcontext-threading-issues
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")),
+                ServiceLifetime.Transient);
 
             builder.Services.AddMediatR(typeof(DomainApplicationAssemblyMarker).GetTypeInfo().Assembly);
-            //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-            //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
-            //builder.Services.AddControllers(
-            //    options =>
-            //    {
-            //        options.Filters.Add<ApiExceptionFilterAttribute>();
-            //        options.Filters.Add<ApiResultFilterAttribute>();
-            //    });
-
-            //builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>());
-            //builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCustomerCommandValidator));
-            //builder.Services.AddValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).Assembly);
 
             builder.Services.AddCustomServices(configuration);
         }
