@@ -2,6 +2,7 @@
 using Mc2.CrudTest.Domain.Customers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace Mc2.CrudTest.Domain.DataAccess
@@ -9,12 +10,15 @@ namespace Mc2.CrudTest.Domain.DataAccess
     public class ApplicationDbContext : DbContext
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<ApplicationDbContext> _logger;
         // for testing
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-            IMediator mediator) : base(options)
+            IMediator mediator,
+            ILogger<ApplicationDbContext> logger) : base(options)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -28,20 +32,20 @@ namespace Mc2.CrudTest.Domain.DataAccess
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var dbResult = await base.SaveChangesAsync(cancellationToken);
-            await DispatchDomainEvents(_mediator, this);
+            await DispatchDomainEvents();
             return dbResult;
         }
 
         public override int SaveChanges()
         {
             var dbResult = base.SaveChanges();
-            DispatchDomainEvents(_mediator, this).GetAwaiter().GetResult();
+            DispatchDomainEvents().GetAwaiter().GetResult();
             return dbResult;
         }
 
-        private static async Task DispatchDomainEvents(IMediator mediator, DbContext context)
+        private async Task DispatchDomainEvents()
         {
-            var entities = context.ChangeTracker
+            var entities = this.ChangeTracker
                 .Entries<AggregateRoot>()
                 .Where(e => e.Entity.DomainEvents.Any())
                 .Select(e => e.Entity);
@@ -53,7 +57,7 @@ namespace Mc2.CrudTest.Domain.DataAccess
             entities.ToList().ForEach(e => e.ClearEvents());
 
             foreach (var domainEvent in domainEvents)
-                await mediator.Publish(domainEvent);
+                await _mediator.Publish(domainEvent);
         }
     }
 }

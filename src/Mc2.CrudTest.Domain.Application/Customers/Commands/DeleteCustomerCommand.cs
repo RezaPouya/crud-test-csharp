@@ -6,13 +6,13 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
     {
         public DeleteCustomerCommand()
         {
-
         }
 
-        public DeleteCustomerCommand(string email)
+        public DeleteCustomerCommand(int id)
         {
-            Email = email;
+            Id = id;
         }
-        public string Email { get; set; }
+
+        public int Id { get; set; }
     }
 }

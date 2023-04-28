@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using FluentValidation.AspNetCore;
 using Mc2.CrudTest.Domain.Application;
-using Mc2.CrudTest.Domain.Application.Customers.Commands;
 using Mc2.CrudTest.Domain.Customers;
 using Mc2.CrudTest.Domain.DataAccess;
 using Mc2.CrudTest.Domain.Manager.Customers;
+using Mc2.CrudTest.HttpApi.Host.Behaviours;
+using Mc2.CrudTest.HttpApi.Host.Filters;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -20,18 +20,24 @@ namespace Mc2.CrudTest.HttpApi.Host.Configurations
 
             var configuration = builder.Configuration;
 
-            // Add services to the container.
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            //builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             builder.Services.AddMediatR(typeof(DomainApplicationAssemblyMarker).GetTypeInfo().Assembly);
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
-            AddControllerWithFluentValidation(builder);
+            builder.Services.AddControllers(
+                options =>
+                {
+                    options.Filters.Add<ApiExceptionFilterAttribute>();
+                    options.Filters.Add<ApiResultFilterAttribute>();
+                });
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).Assembly);
+
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen();
@@ -39,20 +45,7 @@ namespace Mc2.CrudTest.HttpApi.Host.Configurations
             builder.Services.AddCustomServices(configuration);
         }
 
-        private static void AddControllerWithFluentValidation( WebApplicationBuilder? builder)
-        {
-            // TODO : solve the issue , although this is obsolete  , but it work 
-            builder.Services.AddControllers().AddFluentValidation(options =>
-            {
-                options.ImplicitlyValidateChildProperties = true;
-                options.ImplicitlyValidateRootCollectionElements = true;
-                options.RegisterValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).GetTypeInfo().Assembly);
-            }); ;
-
-            //builder.Services.AddControllers();
-            //builder.Services.AddValidatorsFromAssemblyContaining(typeof(CreateCustomerCommandValidator));
-            //builder.Services.AddValidatorsFromAssembly(typeof(DomainApplicationAssemblyMarker).Assembly);
-        }
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
         private static void AddCustomServices(this IServiceCollection services, ConfigurationManager? configurationManager)
         {

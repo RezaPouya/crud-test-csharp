@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Mc2.CrudTest.Utility.Helpers;
+using Mc2.CrudTest.Domain.Helpers;
 
 namespace Mc2.CrudTest.Domain.Application.Customers.Commands
 {
@@ -7,11 +7,9 @@ namespace Mc2.CrudTest.Domain.Application.Customers.Commands
     {
         public DeleteCustomerCommandValidator()
         {
-            RuleFor(p => p.Email)
-                .NotEmpty()
-                .MaximumLength(254)
-                .Must(email => EmailHelper.IsValidEmail(email))
-                .WithMessage("Email is not valid.");
+            RuleFor(p => p.Id)
+                .GreaterThan(0)
+                .WithMessage("Id is not valid.");
         }
     }
 }

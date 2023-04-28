@@ -24,16 +24,23 @@ namespace Mc2.CrudTest.Domain.DataAccess.Migrations
 
             modelBuilder.Entity("Mc2.CrudTest.Domain.Customers.Customer", b =>
                 {
-                    b.Property<string>("Email")
-                        .HasMaxLength(254)
-                        .HasColumnType("varchar(254)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("BankAccountNumber")
                         .IsRequired()
                         .HasMaxLength(34)
                         .HasColumnType("varchar(34)");
 
-                    b.HasKey("Email");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(254)
+                        .HasColumnType("varchar(254)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Customers", (string)null);
                 });
@@ -42,11 +49,11 @@ namespace Mc2.CrudTest.Domain.DataAccess.Migrations
                 {
                     b.OwnsOne("Mc2.CrudTest.Domain.Customers.ValueObjects.CustomerPersonalInfo", "PersonalInfo", b1 =>
                         {
-                            b1.Property<string>("CustomerEmail")
-                                .HasColumnType("varchar(254)");
+                            b1.Property<int>("CustomerId")
+                                .HasColumnType("int");
 
                             b1.Property<DateTime>("DateOfBirth")
-                                .HasColumnType("datetime2")
+                                .HasColumnType("date")
                                 .HasColumnName("DateOfBirth");
 
                             b1.Property<string>("FirstName")
@@ -61,7 +68,7 @@ namespace Mc2.CrudTest.Domain.DataAccess.Migrations
                                 .HasColumnType("nvarchar(64)")
                                 .HasColumnName("LastName");
 
-                            b1.HasKey("CustomerEmail");
+                            b1.HasKey("CustomerId");
 
                             b1.HasIndex("FirstName", "LastName", "DateOfBirth")
                                 .IsUnique();
@@ -69,26 +76,25 @@ namespace Mc2.CrudTest.Domain.DataAccess.Migrations
                             b1.ToTable("Customers");
 
                             b1.WithOwner()
-                                .HasForeignKey("CustomerEmail");
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.OwnsOne("Mc2.CrudTest.Domain.Customers.ValueObjects.CustomerPhoneNumber", "PhoneNumber", b1 =>
                         {
-                            b1.Property<string>("CustomerEmail")
-                                .HasColumnType("varchar(254)");
+                            b1.Property<int>("CustomerId")
+                                .HasColumnType("int");
 
-                            b1.Property<string>("Number")
-                                .IsRequired()
+                            b1.Property<decimal>("Number")
                                 .HasMaxLength(31)
-                                .HasColumnType("varchar(31)")
+                                .HasColumnType("numeric(20,0)")
                                 .HasColumnName("PhoneNumber");
 
-                            b1.HasKey("CustomerEmail");
+                            b1.HasKey("CustomerId");
 
                             b1.ToTable("Customers");
 
                             b1.WithOwner()
-                                .HasForeignKey("CustomerEmail");
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.Navigation("PersonalInfo")

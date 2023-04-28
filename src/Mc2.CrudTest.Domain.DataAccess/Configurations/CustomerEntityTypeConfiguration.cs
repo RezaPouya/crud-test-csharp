@@ -10,7 +10,9 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
         {
             builder.ToTable("Customers");
 
-            builder.HasKey(p => p.Email);
+            builder.HasKey(p => p.Id);
+
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
 
             builder.Property(p => p.Email)
                 .HasMaxLength(254)
@@ -38,9 +40,10 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
 
                 builder.Property(p => p.DateOfBirth)
                 .HasColumnName("DateOfBirth")
+                .HasColumnType("date")
                 .IsRequired();
 
-                builder.HasIndex(e => new { e.FirstName, e.LastName , e.DateOfBirth}).IsUnique();
+                builder.HasIndex(e => new { e.FirstName, e.LastName, e.DateOfBirth }).IsUnique();
             });
 
             builder.OwnsOne(pi => pi.PhoneNumber, builder =>
@@ -48,7 +51,7 @@ namespace Mc2.CrudTest.Domain.DataAccess.Configurations
                 builder.Property(p => p.Number)
                 .HasColumnName("PhoneNumber")
                 .HasMaxLength(31)
-                .HasColumnType("varchar(31)")
+                .HasColumnType("numeric(20,0)")
                 .IsRequired();
             });
         }

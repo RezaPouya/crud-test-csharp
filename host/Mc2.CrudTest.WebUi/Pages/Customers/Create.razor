@@ -1,0 +1,107 @@
+﻿@page "/create"
+@page "/customers/create"
+@using FluentValidation.Results
+@using Mc2.CrudTest.Domain.Application.Customers.Commands
+@using Mc2.CrudTest.Domain.BaseEntities
+@using Mc2.CrudTest.Domain.Customers.DTOs.InputDtos
+@using System.Text.Json
+@using System.Text
+@using Mc2.CrudTest.WebUi.Helpers
+
+
+<PageTitle>Create Customer</PageTitle>
+
+<h2>Create Customer</h2>
+<hr />
+@*<div class="alert alert-danger"></div>*@
+
+<EditForm class="form" Model="@createCommand" OnValidSubmit="Submit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div id="exceptions"></div>
+    <ValidationSummary></ValidationSummary>
+
+    <p>
+        <label class="form-label" for="FirstName">First Name *</label>
+        <InputText class="form-control" id="FirstName" @bind-Value="createCommand.FirstName"></InputText>
+        <ValidationMessage For="@(() => createCommand.FirstName )" />
+    </p>
+    <p>
+        <label class="form-label" for="FirstName">Last Name *</label>
+        <InputText class="form-control" id="LastName" @bind-Value="createCommand.LastName"></InputText>
+        <ValidationMessage For="@(() => createCommand.LastName )" />
+    </p>
+    <p>
+        <label class="form-label" for="Email">Email *</label>
+        <InputText class="form-control" id="Email" @bind-Value="createCommand.Email"></InputText>
+        <ValidationMessage For="@(() => createCommand.Email )" />
+    </p>
+    <p>
+        <label class="form-label" for="BankAccountNumber">Bank Account Number*</label>
+        <InputText class="form-control" id="BankAccountNumber" @bind-Value="createCommand.BankAccountNumber"></InputText>
+        <ValidationMessage For="@(() => createCommand.BankAccountNumber )" />
+    </p>
+    <p>
+        <label class="form-label" for="PhoneNumber">Phone Number *</label>
+        <InputText class="form-control" id="PhoneNumber" @bind-Value="createCommand.PhoneNumber"></InputText>
+        <ValidationMessage For="@(() => createCommand.PhoneNumber )" />
+    </p>
+    <p>
+        <label class="form-label" for="DateOfBirth">Date Of Birth *</label>
+        <InputDate class="form-control" id="DateOfBirth" @bind-Value="createCommand.DateOfBirth"></InputDate>
+        <ValidationMessage For="@(() => createCommand.DateOfBirth )" />
+    </p>
+
+@*    <div class="card">
+        <div class="card-body">
+            <span id="resultJson"></span>
+        </div>
+    </div>*@
+
+    <hr />
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-warning" type="reset">Reset</button>
+    <button class="btn btn-link" @onclick="NavigateToHome">Back to list</button>
+</EditForm>
+
+
+
+@code {
+    private CreateCustomerCommand createCommand = new CreateCustomerCommand()
+        {
+            DateOfBirth = new DateTime(2000, 1, 1)
+        };
+
+    protected async Task Submit()
+    {
+        await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", "");
+
+        try
+        {
+            CreateCustomerCommandValidator validator = new CreateCustomerCommandValidator();
+
+            var validate = await validator.ValidateAsync(createCommand);
+            if (validate.IsValid)
+            {
+                var resuxlt = await _sender.Send(createCommand);
+                NavigateToHome();
+            }
+            else
+            {
+                await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", ErrorHtmlHelper.CreateErrors(validate.Errors));
+            }
+        }
+        catch (BusinessException ex)
+        {
+            await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", ErrorHtmlHelper.CreateMessageFromBusinessException(ex));
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.InvokeVoidAsync("setElementHtmlById", "exceptions", ErrorHtmlHelper.CreateMessageFromException());
+        }
+    }
+
+    protected void NavigateToHome()
+    {
+        _navigationManager.NavigateTo("/");
+    }
+}

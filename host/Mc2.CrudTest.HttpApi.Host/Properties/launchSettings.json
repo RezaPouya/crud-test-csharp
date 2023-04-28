@@ -4,12 +4,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:32249",
+      "applicationUrl": "http://localhost:5145",
       "sslPort": 0
     }
   },
   "profiles": {
-    "Mc2.CrudTest.HttpApi.Host": {
+    "HttpApi.Host": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

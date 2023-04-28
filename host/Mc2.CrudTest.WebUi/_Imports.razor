@@ -1,0 +1,18 @@
+﻿@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using Mc2.CrudTest.WebUi
+@using Mc2.CrudTest.WebUi.Shared
+@using MediatR
+@using Mc2.CrudTest.WebUi.Pages.Customers
+@using Mc2.CrudTest.Domain.Application.Customers.Queries
+@using Mc2.CrudTest.Domain.Customers.DTOs.OutputDtos
+@*@using Blazored.FluentValidation*@
+@inject IJSRuntime JsRuntime
+@inject IMediator _sender
+@inject NavigationManager _navigationManager

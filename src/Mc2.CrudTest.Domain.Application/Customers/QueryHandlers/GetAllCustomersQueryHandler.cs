@@ -19,6 +19,7 @@ namespace Mc2.CrudTest.Domain.Application.Customers.QueryHandlers
         {
             return await _dbContext.Customers.AsNoTracking().Select(p => new CustomerOutputDto
             {
+                Id = p.Id,
                 BankAccountNumber = p.BankAccountNumber,
                 DateOfBirth = p.PersonalInfo.DateOfBirth,
                 Email = p.Email,
